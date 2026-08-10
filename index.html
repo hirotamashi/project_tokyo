@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokyo — роман</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --accent-soft: #8998A4;
+    --line: #CFC8BA;
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    line-height: 1.6;
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 88px 0 64px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 56px 0 48px; }
+  }
+
+  /* ---- Masthead ---- */
+
+  .wordmark{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 42px;
+    letter-spacing: 0.14em;
+    text-align: center;
+    margin: 0;
+  }
+
+  .byline{
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 14px 0 0;
+  }
+
+  .premise{
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 40ch;
+    margin: 22px auto 0;
+  }
+
+  .masthead-rule{
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 44px 0 0;
+  }
+
+  /* ---- Season strip (signature element) ---- */
+
+  .seasons{
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 28px 0 32px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  @media (max-width: 480px){
+    .seasons{ gap: 28px; }
+  }
+
+  .season{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-faint);
+  }
+
+  .season .glyph{
+    font-family: var(--serif-display);
+    font-size: 20px;
+  }
+
+  .season .tick{
+    width: 1px;
+    height: 14px;
+    background: var(--line);
+  }
+
+  .season .label{
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .season.is-active{
+    color: var(--accent);
+  }
+
+  .season.is-active .tick{
+    background: var(--accent);
+    height: 18px;
+  }
+
+  /* ---- Table of contents ---- */
+
+  .toc-label{
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin: 40px 0 4px;
+  }
+
+  .toc{
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+
+  .toc li{
+    border-bottom: 1px solid var(--line);
+  }
+
+  .toc a, .toc .row{
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: baseline;
+    gap: 16px;
+    padding: 18px 4px;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: border-color 0.15s ease, padding-left 0.15s ease, background 0.15s ease;
+  }
+
+  .toc a:hover, .toc a:focus-visible{
+    border-left-color: var(--accent);
+    padding-left: 14px;
+    background: var(--bg-raised);
+  }
+
+  .toc a:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+
+  .toc .num{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  .toc .title{
+    font-size: 17px;
+    color: var(--ink);
+  }
+
+  .toc .row.is-locked .title{
+    color: var(--ink-faint);
+  }
+
+  .toc .tag{
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    white-space: nowrap;
+  }
+
+  .toc .row.is-locked .tag{
+    color: var(--ink-faint);
+  }
+
+  /* ---- Footer ---- */
+
+  .footer{
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .footer p{
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin: 0;
+  }
+
+  .footer a{
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .toc a{ transition: none; }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <h1 class="wordmark">TOKYO</h1>
+    <p class="byline">роман · Хиро Тамаши</p>
+    <p class="premise">Токио, где город стирает людей до контуров — и один из них решает не сопротивляться.</p>
+
+    <hr class="masthead-rule">
+
+    <div class="seasons">
+      <div class="season is-active">
+        <span class="glyph">夏</span>
+        <span class="tick"></span>
+        <span class="label">Лето</span>
+      </div>
+      <div class="season">
+        <span class="glyph">秋</span>
+        <span class="tick"></span>
+        <span class="label">Осень</span>
+      </div>
+      <div class="season">
+        <span class="glyph">冬</span>
+        <span class="tick"></span>
+        <span class="label">Зима</span>
+      </div>
+      <div class="season">
+        <span class="glyph">春</span>
+        <span class="tick"></span>
+        <span class="label">Весна</span>
+      </div>
+    </div>
+
+    <p class="toc-label">Оглавление</p>
+    <ul class="toc">
+      <li>
+        <a href="chapter-01.html">
+          <span class="num">01</span>
+          <span class="title">Шинджуку, до девяти утра</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      <li>
+        <span class="row is-locked">
+          <span class="num">02</span>
+          <span class="title">Библиотека Васэда</span>
+          <span class="tag">выйдет через 7 дней</span>
+        </span>
+      </li>
+      <li>
+        <span class="row is-locked">
+          <span class="num">03</span>
+          <span class="title">Танабата</span>
+          <span class="tag">выйдет через 14 дней</span>
+        </span>
+      </li>
+      <li>
+        <span class="row is-locked">
+          <span class="num">04</span>
+          <span class="title">—</span>
+          <span class="tag">скоро</span>
+        </span>
+      </li>
+    </ul>
+
+    <div class="footer">
+      <p>Одна глава в неделю</p>
+      <p><a href="https://t.me/">Обсудить в Telegram →</a></p>
+    </div>
+  </main>
+</body>
+</html>

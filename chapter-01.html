@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 1. Шинджуку, до девяти утра — Tokyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  /* ---- Nav ---- */
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ---- Chapter head ---- */
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  /* ---- Body ---- */
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .placeholder-note{
+    margin-top: 40px;
+    padding: 14px 16px;
+    background: var(--bg-raised);
+    border-left: 2px solid var(--accent);
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+
+  /* ---- Footer nav ---- */
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev{ color: var(--ink-faint); }
+
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 01 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Шинджуку, до девяти утра</h1>
+
+    <div class="prose">
+      <p>Кэйтаро вышел из метро на семь минут раньше обычного и не знал, что с этим делать. Эскалатор поднимал его медленно, будто нарочно, а наверху город уже был включён на полную — пар над решётками, запах жареного на углях мяса из закрытого ресторана, кто-то бежал с зонтом, хотя дождя ещё не было.</p>
+      <p>Он остановился у автомата с кофе, не потому что хотел кофе, а потому что не хотел приходить в офис первым. В окне отражался человек в сером пиджаке, слегка сутулый, с телефоном в одной руке и билетом на электричку в другой — и Кэйтаро на секунду не узнал в нём себя.</p>
+      <p>Юи писала, что задержится. Он ответил «ок» и убрал телефон, хотя мог написать что-то ещё. Мог написать многое. Вместо этого он смотрел, как голубь ходит по кромке урны, будто выбирает, с какой стороны удобнее упасть.</p>
+      <p>В девять офис откроется, и день начнётся так же, как все остальные — с совещания, где никто не скажет ничего важного. Но пока было семь минут, и семь минут — это было почти его.</p>
+    </div>
+
+    <div class="placeholder-note">
+      Это черновой отрывок для проверки вёрстки — вставь сюда настоящий текст главы.
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <span class="prev">← Пред. глава</span>
+        <span class="next-placeholder" style="color: var(--ink-faint);">След. глава — через 7 дней</span>
+      </div>
+      <p class="colophon">TOKYO · Хиро Тамаши</p>
+    </div>
+  </main>
+</body>
+</html>
