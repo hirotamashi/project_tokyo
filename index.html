@@ -238,12 +238,24 @@
   <main class="page">
     <h1 class="wordmark">TOKYO</h1>
     <p class="byline">роман · Хиро Тамаши</p>
-    <p class="premise">Токио, где город стирает людей до контуров — и один из них решает не сопротивляться.</p>
+    <!-- ПОДВОДКА (premise): одна строка под названием, курсивом. Меняй текст внутри <p> ниже. -->
+    <p class="premise">Токио. Один год из жизни человека, который умеет ждать.</p>
 
     <hr class="masthead-rule">
 
+    <!--
+      СЕЗОННАЯ ПОЛОСА: порядок соответствует ходу сюжета (весна → лето → осень → зима).
+      Класс "is-active" ставится на сезон ТЕКУЩЕЙ последней вышедшей главы —
+      сейчас это глава 1 (весна), поэтому активна первая позиция.
+      Когда выйдет летняя глава — перенеси "is-active" на блок с 夏.
+    -->
     <div class="seasons">
       <div class="season is-active">
+        <span class="glyph">春</span>
+        <span class="tick"></span>
+        <span class="label">Весна</span>
+      </div>
+      <div class="season">
         <span class="glyph">夏</span>
         <span class="tick"></span>
         <span class="label">Лето</span>
@@ -258,33 +270,36 @@
         <span class="tick"></span>
         <span class="label">Зима</span>
       </div>
-      <div class="season">
-        <span class="glyph">春</span>
-        <span class="tick"></span>
-        <span class="label">Весна</span>
-      </div>
     </div>
 
+    <!--
+      ОГЛАВЛЕНИЕ: каждая глава называется именем героя.
+      Для вышедшей главы — обычная ссылка (<a href="chapter-0N.html">).
+      Для ещё не написанной — <span class="row is-locked"> вместо <a>,
+      title можно оставить "—", пока не решишь имя, tag — "выйдет через N дней" или "скоро".
+      Когда напишешь новую главу: переименуй <span class="row is-locked"> в <a href="chapter-0N.html">,
+      впиши title и замени tag на подходящую пометку сезона (например "春 · Весна").
+    -->
     <p class="toc-label">Оглавление</p>
     <ul class="toc">
       <li>
         <a href="chapter-01.html">
           <span class="num">01</span>
-          <span class="title">Шинджуку, до девяти утра</span>
-          <span class="tag">夏 · Лето</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">春 · Весна</span>
         </a>
       </li>
       <li>
         <span class="row is-locked">
           <span class="num">02</span>
-          <span class="title">Библиотека Васэда</span>
+          <span class="title">—</span>
           <span class="tag">выйдет через 7 дней</span>
         </span>
       </li>
       <li>
         <span class="row is-locked">
           <span class="num">03</span>
-          <span class="title">Танабата</span>
+          <span class="title">—</span>
           <span class="tag">выйдет через 14 дней</span>
         </span>
       </li>
