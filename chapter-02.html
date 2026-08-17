@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 2. Наоки — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">春</span>
+      <span>Глава 2 · Весна</span>
+    </div>
+
+    <h1 class="chapter-title">Наоки</h1>
+
+    <div class="prose">
+      <p>Поезд остановился на станции Синдзюку. Ожидавшие на перроне тут же заменяли людей, покидавших вагоны.</p>
+<p>Протискиваясь сквозь толпу, Наоки быстрым шагом двинулась в сторону эскалаторов. «Куда они все постоянно едут?» — возмутилась она мысленно. Что касалось самой Наоки, она спешила к своему первому рабочему дню.</p>
+      <p>Спустя месяц поисков работы ей наконец удалось найти то, что было ей по душе и по силам. Она рассматривала много разных вариантов, но благодаря тете могла выбирать. Тетя вежливо разрешила ей пожить с ней какое-то время. После переезда из Канадзавы в Токио, Наоки пообещала помогать ей финансово. На что тетя ответила: «Я не прощу себе, если ты будешь работать где попало. Но я хочу, чтобы ты училась самостоятельности».</p>
+      <p>Томоэ Химэкава была лектором в университете и имела там хорошие связи. Тетя договорилась о собеседовании в Большой центральной библиотеке Васэда на Синдзюку. После успешного собеседования она не скрывала своей гордости за племянницу. Найти первую работу в таком учреждении, пусть и в качестве помощницы, многого стоило. Наоки исполнился двадцать один год, и она часто переживала, что сверстники уже имеют несколько строчек в резюме, в то время как она только начинает свой карьерный путь. Ей всегда казалось, что она отстает. Но теперь с радостью шла к новому этапу в своей жизни.</p>
+      <p>Библиотека Васэда встретила ее прохладой и тишиной. Не той неловкой тишиной, что повисает между людьми, не знающими о чем говорить, — а живой, наполненной. Шелест страниц, приглушенные шаги по паркету, едва слышный гул кондиционера. Наоки остановилась у входа на секунду дольше, чем следовало.</p>
+      <p>— Наоки Такэда? — немолодая женщина в очках смотрела на нее из-за стойки. — Я — Фудзисава-сан. Мы с вами общались на собеседовании.</p>
+      <p>— Да, конечно. Доброе утро, — Наоки поклонилась в знак уважения.</p>
+      <p>Фудзисава-сан оказалась из тех людей, которые говорят негромко, но так, что хочется слушать. Она провела Наоки по залам, объясняя систему каталогов, показывая где что хранится и как работает выдача. Наоки старательно запоминала и кивала, хотя уже к третьему залу поняла, что запомнила едва половину.</p>
+      <p>Первые часы она провела за сортировкой возвращенных книг — монотонная работа, которая как ни странно успокаивала. Читала корешки, искала нужную полку, ставила на место. Иногда задерживала взгляд на названиях или открывала первую страницу.</p>
+      <p>К обеду она уже немного освоилась. Посетители приходили и уходили — студенты с ноутбуками, пожилые мужчины с газетами, мамы с детьми. Наоки наблюдала за ними украдкой, пока расставляла книги. От монотонности работы, она невольно начала угадывать: этот читает детективы, та девушка явно пишет диплом, этот дедушка приходит сюда не за книгами, а просто потому-что дома нет такого спокойствия.</p>
+      <p>После обеда Фудзисава-сан поставила ее на выдачу. Наоки нервничала первые полчаса, но читатели оказались людьми не обидчивыми — никто не раздражался, когда она чуть медлила, никто не торопил.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>В половине девятого, когда последний посетитель покинул зал и Наоки начала собираться, Фудзисава-сан сказала:</p>
+      <p>— Хорошо справилась сегодня.</p>
+      <p>Наоки не ожидала этих слов и не сразу нашлась с ответом.</p>
+      <p>— Спасибо, — сказала она наконец. — Я очень старалась.</p>
+      <p>— Знаю, — коротко ответила Фудзисава-сан и вернулась к своим бумагам.</p>
+      <p>На улице уже темнело. Наоки вышла на Синдзюку и почувствовала, как город навалился со всех сторон — огни, голоса, запах уличной еды. После целого дня в библиотечной тишине это было почти оглушительно. Она остановилась, достала телефон.</p>
+      <p>Сообщение от Рин: «Ты как? Мы сегодня собираемся, приходи — расскажешь как все прошло. И кстати, будет пара новых ребят, познакомишься».</p>
+      <p>Наоки написала в ответ, что зайдет на час, не больше — она устала. Получив локацию, убрала телефон и пошла к станции.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-01.html">← Пред. глава</a>
+<span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+</body>
+</html>
