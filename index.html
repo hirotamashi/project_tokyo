@@ -247,9 +247,13 @@
 
     <!--
       СЕЗОННАЯ ПОЛОСА: порядок соответствует ходу сюжета (весна → лето → осень → зима).
-      Класс "is-active" ставится на сезон ТЕКУЩЕЙ последней вышедшей главы —
-      сейчас это глава 1 (весна), поэтому активна первая позиция.
-      Когда выйдет летняя глава — перенеси "is-active" на блок с 夏.
+      Класс "is-active" ставится на сезон ТЕКУЩЕЙ последней вышедшей главы.
+      Сейчас опубликована только глава 1 (весна) — активна первая позиция.
+      По мере публикации глав из закомментированного списка ниже,
+      переноси "is-active" на соответствующий сезон:
+        главы 2–12  → 春 Весна (уже активно)
+        главы 13–25 → 夏 Лето
+        главы 26–?  → 冬 Зима (осень 秋 в этом году сюжетно пропускается)
     -->
     <div class="seasons">
       <div class="season is-active">
@@ -275,12 +279,14 @@
     </div>
 
     <!--
-      ОГЛАВЛЕНИЕ: каждая глава называется именем героя.
-      Для вышедшей главы — обычная ссылка (<a href="chapter-0N.html">).
-      Для ещё не написанной — <span class="row is-locked"> вместо <a>,
-      title можно оставить "—", пока не решишь имя, tag — "выйдет через N дней" или "скоро".
-      Когда напишешь новую главу: переименуй <span class="row is-locked"> в <a href="chapter-0N.html">,
-      впиши title и замени tag на подходящую пометку сезона (например "春 · Весна").
+      ОГЛАВЛЕНИЕ: каждая глава называется именем героя (POV).
+      Глава 1 опубликована — обычная ссылка на chapter-01.html.
+      Главы 2 – 27 готовы и лежат в репозитории, но закомментированы ниже.
+      Публикуй по одной: раскомментируй соответствующий блок li,
+      убрав открывающий и закрывающий комментарийные маркеры вокруг него,
+      затем сохрани файл — глава появится в списке.
+      Метка сезона уже проставлена правильно для каждой главы,
+      ничего вручную высчитывать не нужно.
     -->
     <p class="toc-label">Оглавление</p>
     <ul class="toc">
@@ -291,27 +297,242 @@
           <span class="tag">春 · Весна</span>
         </a>
       </li>
+
+      <!--
       <li>
-        <span class="row is-locked">
+        <a href="chapter-02.html">
           <span class="num">2</span>
-          <span class="title">—</span>
-          <span class="tag">выйдет через 7 дней</span>
-        </span>
+          <span class="title">Наоки</span>
+          <span class="tag">春 · Весна</span>
+        </a>
       </li>
+      -->
+      <!--
       <li>
-        <span class="row is-locked">
+        <a href="chapter-03.html">
           <span class="num">3</span>
-          <span class="title">—</span>
-          <span class="tag">выйдет через 14 дней</span>
-        </span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">春 · Весна</span>
+        </a>
       </li>
+      -->
+      <!--
       <li>
-        <span class="row is-locked">
+        <a href="chapter-04.html">
           <span class="num">4</span>
-          <span class="title">—</span>
-          <span class="tag">скоро</span>
-        </span>
+          <span class="title">Наоки</span>
+          <span class="tag">春 · Весна</span>
+        </a>
       </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-05.html">
+          <span class="num">5</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-06.html">
+          <span class="num">6</span>
+          <span class="title">Наоки</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-07.html">
+          <span class="num">7</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-08.html">
+          <span class="num">8</span>
+          <span class="title">Юи</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-09.html">
+          <span class="num">9</span>
+          <span class="title">Наоки</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-10.html">
+          <span class="num">10</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-11.html">
+          <span class="num">11</span>
+          <span class="title">Наоки</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-12.html">
+          <span class="num">12</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">春 · Весна</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-13.html">
+          <span class="num">13</span>
+          <span class="title">Наоки</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-14.html">
+          <span class="num">14</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-15.html">
+          <span class="num">15</span>
+          <span class="title">Наоки</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-16.html">
+          <span class="num">16</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-17.html">
+          <span class="num">17</span>
+          <span class="title">Наоки</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-18.html">
+          <span class="num">18</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-19.html">
+          <span class="num">19</span>
+          <span class="title">Наоки</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-20.html">
+          <span class="num">20</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-21.html">
+          <span class="num">21</span>
+          <span class="title">Нэйтан</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-22.html">
+          <span class="num">22</span>
+          <span class="title">Наоки</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-23.html">
+          <span class="num">23</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-24.html">
+          <span class="num">24</span>
+          <span class="title">Юи</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-25.html">
+          <span class="num">25</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">夏 · Лето</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-26.html">
+          <span class="num">26</span>
+          <span class="title">Кейтаро</span>
+          <span class="tag">冬 · Зима</span>
+        </a>
+      </li>
+      -->
+      <!--
+      <li>
+        <a href="chapter-27.html">
+          <span class="num">27</span>
+          <span class="title">Наоки</span>
+          <span class="tag">冬 · Зима</span>
+        </a>
+      </li>
+      -->
+
     </ul>
 
     <div class="footer">
