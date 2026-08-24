@@ -126,14 +126,24 @@
   .term{
     position: relative;
     border-bottom: 1px dotted var(--accent);
-    cursor: help;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .term:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   .term .note{
+    --shift: 0px;
+    --arrow-shift: 0px;
     position: absolute;
     left: 50%;
     bottom: calc(100% + 10px);
-    transform: translateX(-50%) translateY(6px);
+    transform: translateX(calc(-50% + var(--shift))) translateY(6px);
     width: max-content;
     max-width: 240px;
     background: var(--bg-raised);
@@ -158,17 +168,41 @@
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(calc(-50% + var(--arrow-shift)));
     border: 6px solid transparent;
     border-top-color: var(--line);
   }
 
+  /* Если места сверху не хватает — сноска раскрывается вниз */
+  .term .note.is-below{
+    bottom: auto;
+    top: calc(100% + 10px);
+  }
+
+  .term .note.is-below::after{
+    top: auto;
+    bottom: 100%;
+    border-top-color: transparent;
+    border-bottom-color: var(--line);
+  }
+
   @media (hover: hover){
-    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .term:hover .note{
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(calc(-50% + var(--shift))) translateY(0);
+    }
   }
 
   .term.active .note{
-    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(calc(-50% + var(--shift))) translateY(0);
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .term .note{ transition: none; }
   }
 
   .scene-break{
@@ -304,19 +338,103 @@
 
   </main>
 
-  <script>
-    document.addEventListener('click', function(e){
-      var term = e.target.closest('.term');
+<script>
+(function () {
+  var terms = [].slice.call(document.querySelectorAll('.term'));
+  if (!terms.length) return;
 
-      document.querySelectorAll('.term.active').forEach(function(t){
-        if (t !== term) t.classList.remove('active');
-      });
+  var EDGE = 12; // отступ от края экрана
 
-      if (term) {
-        e.preventDefault();
-        term.classList.toggle('active');
-      }
+  terms.forEach(function (term, i) {
+    var note = term.querySelector('.note');
+    if (!note) return;
+
+    // делаем термин настоящей кнопкой: доступен с клавиатуры и для скринридеров
+    term.setAttribute('tabindex', '0');
+    term.setAttribute('role', 'button');
+    term.setAttribute('aria-expanded', 'false');
+    if (!note.id) note.id = 'note-' + (i + 1);
+    term.setAttribute('aria-describedby', note.id);
+    note.setAttribute('role', 'tooltip');
+
+    // слушатель висит на самом элементе — это надёжнее делегирования в iOS Safari
+    term.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (e.target.closest && e.target.closest('.note')) return; // тап по тексту сноски её не закрывает
+      e.preventDefault();
+      toggle(term);
     });
-  </script>
+
+    // на десктопе сноска показывается по наведению — пересчитываем позицию и там
+    term.addEventListener('mouseenter', function () { place(term); });
+  });
+
+  function place(term) {
+    var note = term.querySelector('.note');
+    if (!note) return;
+
+    note.classList.remove('is-below');
+    note.style.setProperty('--shift', '0px');
+    note.style.setProperty('--arrow-shift', '0px');
+
+    var r = note.getBoundingClientRect();
+    var vw = document.documentElement.clientWidth;
+
+    // не даём сноске уехать за край экрана по горизонтали
+    var shift = 0;
+    if (r.left < EDGE) shift = EDGE - r.left;
+    else if (r.right > vw - EDGE) shift = (vw - EDGE) - r.right;
+
+    if (shift) {
+      note.style.setProperty('--shift', Math.round(shift) + 'px');
+      // хвостик остаётся над словом, но не вылезает за саму карточку
+      var limit = Math.max(0, r.width / 2 - 14);
+      var arrow = Math.max(-limit, Math.min(limit, -shift));
+      note.style.setProperty('--arrow-shift', Math.round(arrow) + 'px');
+    }
+
+    // если сверху не хватает места — разворачиваем вниз
+    if (r.top < EDGE) note.classList.add('is-below');
+  }
+
+  function close(term) {
+    term.classList.remove('active');
+    term.setAttribute('aria-expanded', 'false');
+  }
+
+  function closeAll() { terms.forEach(close); }
+
+  function toggle(term) {
+    var wasOpen = term.classList.contains('active');
+    closeAll();
+    if (wasOpen) return;
+    place(term);
+    term.classList.add('active');
+    term.setAttribute('aria-expanded', 'true');
+  }
+
+  // тап/клик мимо — закрываем; клик по самой сноске оставляем (текст можно выделить)
+  document.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('.note')) return;
+    closeAll();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' || e.key === 'Esc') { closeAll(); return; }
+    var el = document.activeElement;
+    if (!el || !el.classList || !el.classList.contains('term')) return;
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      toggle(el);
+    }
+  });
+
+  // поворот экрана / изменение размера — пересчитываем открытую сноску
+  window.addEventListener('resize', function () {
+    var open = document.querySelector('.term.active');
+    if (open) place(open);
+  });
+})();
+</script>
 </body>
 </html>
