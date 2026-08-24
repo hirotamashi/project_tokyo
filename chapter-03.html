@@ -305,16 +305,60 @@
   </main>
 
   <script>
+    var EDGE_PADDING = 12;
+
+    function resetNotePosition(term){
+      var note = term.querySelector('.note');
+      if (note) {
+        note.style.left = '';
+        note.style.transform = '';
+      }
+    }
+
+    function positionNote(term){
+      var note = term.querySelector('.note');
+      if (!note) return;
+
+      // Start from the default centered state
+      note.style.left = '50%';
+      note.style.transform = 'translateX(-50%) translateY(0)';
+
+      var rect = note.getBoundingClientRect();
+      var viewportWidth = document.documentElement.clientWidth;
+      var shift = 0;
+
+      if (rect.left < EDGE_PADDING) {
+        shift = EDGE_PADDING - rect.left;
+      } else if (rect.right > viewportWidth - EDGE_PADDING) {
+        shift = (viewportWidth - EDGE_PADDING) - rect.right;
+      }
+
+      if (shift !== 0) {
+        note.style.transform = 'translateX(calc(-50% + ' + shift + 'px)) translateY(0)';
+      }
+    }
+
     document.addEventListener('click', function(e){
       var term = e.target.closest('.term');
 
       document.querySelectorAll('.term.active').forEach(function(t){
-        if (t !== term) t.classList.remove('active');
+        if (t !== term) {
+          t.classList.remove('active');
+          resetNotePosition(t);
+        }
       });
 
       if (term) {
         e.preventDefault();
+        var willActivate = !term.classList.contains('active');
         term.classList.toggle('active');
+
+        if (willActivate) {
+          // Wait a frame so the note is visible/measurable before positioning
+          requestAnimationFrame(function(){ positionNote(term); });
+        } else {
+          resetNotePosition(term);
+        }
       }
     });
   </script>
