@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 3. Кейтаро — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: 240px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">春</span>
+      <span>Глава 3 · Весна</span>
+    </div>
+
+    <h1 class="chapter-title">Кейтаро</h1>
+
+    <div class="prose">
+      <p>Два друга встретились у входа в бар, после чего Масато пригласил Кейтаро войти словно в свой собственный дом. Да и вел он себя так же. Он довольно много времени проводил в заведениях, и этот бар не был исключением. Масато, в отличие от Кейтаро, был экстравертом и весьма уверенным в себе человеком. Шрам на левой брови свидетельствовал об импульсивном характере. Кейтаро не раз приходилось попадать во всякие передряги с другом детства.</p>
+      <p>— Это у тебя откуда? — Кейтаро указал на покрасневшие опухшие костяшки кулака.</p>
+      <p>— Избил кого-то по дороге сюда, — отшутился Масато.</p>
+      <p>Кейтаро лишь покачал головой.</p>
+      <p>— Я просто отжимался на кулаках на тренировке, не переживай. Потом колотил грушу без перчаток.</p>
+      <p>Они сидели вдвоем за столиком, рассчитанным на восемь, а то и десять человек. Друзья гораздо меньше времени проводили вместе с тех пор, как оба закончили университет и нашли работу. Но, несмотря на это, их отношения и поведение друг с другом не изменились. Масато все так же рассказывал другу о своих достижениях с девушками, а Кейтаро всегда отправлял ему черновики своей потенциальной книги.</p>
+      <p>— Кто еще придет? — спросил Кейтаро после того, как они обсудили какие-то незначительные новости.</p>
+      <p>— Юта, Аяка, Сота. А еще Рин обещала прийти.</p>
+      <p>— Nice. — Иногда друзья использовали английские слова в диалогах: когда-то в школе они вместе учили язык, и это осталось привычкой.</p>
+      <p>Спустя полчаса после их прихода, друзья начали постепенно присоединяться к столу. Первым пришел Сота, коллега Масато — их объединяла любовь к волейболу, и они виделись вне работы. Следом появился Юта, пожалуй, самый веселый человек в любой компании. Он учился в одной школе с Масато и Кейтаро, но на пару классов ниже. Друзьями, однако, они стали вне школы. Аяка и Рин пришли последними вместе. Аяка была их одноклассницей и всегда хорошо ладила с Масато. Насколько помнил Кейтаро, она была в сборной школы практически по всем видам спорта. Рин училась в одном университете с Аякой. Кейтаро редко видел ее в компании — отчасти и потому, что сам не всегда посещал тусовки.</p>
+      <p>— Не знаю как вы, а я хочу есть, — Аяка первой потянулась за меню, когда все расселись.</p>
+      <p>— Бургеры здесь неплохие, — одобрил Масато.</p>
+      <p>— Кстати, я пригласила подругу. Она немного опоздает. Сейчас узнаю, что она будет, — Рин достала телефон.</p>
+      <p>Подруга Рин присоединилась к компании, когда начали подавать заказанные блюда.</p>
+      <p>— Всем привет, это Наоки, — представила ее Рин.</p>
+      <p>Новенькая сдержанно отвечала на вопросы, и ребята старались на нее не давить.</p>
+      <p>— Библиотека на Синдзюку — это серьезно, — заметил Масато. — Кейтаро там часто притворяется, что читает.</p>
+      <p>— Часто там бываешь? — Наоки обратилась к Кейтаро.</p>
+      <p>— Только по выходным, когда дома не читается.</p>
+      <p>После того как друзья покончили с блюдами, официанта попросили принести барное меню. Девушки начали бурно обсуждать напитки.</p>
+      <p>— Сота? — спросил Юта.</p>
+      <p>Сота кивнул.</p>
+      <p>— Масато?</p>
+      <p>Масато кивнул.</p>
+      <p>— Кейтаро?</p>
+      <p>Кейтаро поймал на себе взгляд Наоки — она не понимала, на что соглашаются парни. Он тоже кивнул.</p>
+      <p>— Четыре <span class="term">хайбола<span class="note">Хайбол — коктейль из виски с содовой, один из самых популярных барных напитков в Японии.</span></span>, пожалуйста, — моментально среагировал Юта.</p>
+      <p>— Отлично, — обрадовался Кейтаро.</p>
+      <p>— Самое то, — поддержал Сота.</p>
+      <p>— А давайте пять, — присоединилась Аяка.</p>
+      <p>— Вы не знали, что он закажет? — улыбнулась Наоки.</p>
+      <p>— Это их небольшая традиция. Я буду <span class="term">умэсю<span class="note">Умэсю — сладкое японское сливовое вино, часто подают со льдом или содовой.</span></span>, — Рин перевела взгляд с Наоки на официанта.</p>
+      <p>— Доверяем младшему выбор напитков, — Масато улыбнулся Наоки. — А ты что будешь?</p>
+      <p>— Выбираю между оолонг-чаем и умэсю, — Наоки снова заглянула в меню.</p>
+      <p>— Могу и тебе помочь с выбором, — сказал Юта.</p>
+      <p>Наоки призадумалась, но Юта уже решил.</p>
+      <p>— И еще один умэсю, пожалуйста.</p>
+      <p>Наоки по-доброму улыбнулась. Для Кейтаро со стороны эта улыбка показалась чем-то вроде одобрения — а возможно, она просто была рада, что сама принята в компанию.</p>
+      <p>Два бокала умэсю подали первыми. Вино было разбавлено содовой, придавая напитку розовый оттенок. Но Рин и Наоки к ним не притронулись, ожидая когда и остальным подадут их напитки.</p>
+      <p>Когда принесли пять стаканов хайбола, Юта принялся объяснять Наоки состав коктейля. Масато и Сота были не согласны с пропорциями, которые он озвучил. Кейтаро по привычке взял лимон с края стакана и выжал его внутрь, наблюдая, как пузырьки поднимаются вверх.</p>
+      <p>— <span class="term">Канпай<span class="note">Канпай — тост, японский аналог «ваше здоровье» или «за встречу».</span></span>! — Масато поднял стакан, и компания дружно принялась отпивать со своих.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>— Сегодня был твой первый рабочий день? — Сота не верил своим ушам.</p>
+      <p>— Дааа, — протянула Наоки. — Сказали, что этот день менее загружен, и у них было время со мной возиться.</p>
+      <p>— Но это же пятница! — произнес Юта, явно громче, чем планировал.</p>
+      <p>Время перевалило за полночь. Юта к тому моменту успел выпить четыре-пять стаканов. Да и остальным было довольно весело: Аяка и Масато вспоминали школьные проделки, Рин извинялась, что не всегда получается тусить с ними, Наоки отвечала на самые разнообразные вопросы, которые могли придумать друзья под действием алкоголя, Юта и Сота уговаривали перенести вечеринку в караоке, а Кейтаро много смеялся.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-02.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+</body>
+</html>
