@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 5. Кейтаро — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">春</span>
+      <span>Глава 5 · Весна</span>
+    </div>
+
+    <h1 class="chapter-title">Кейтаро</h1>
+
+    <div class="prose">
+      <p>Кейтаро с друзьями находились в караоке. Масато вцепился в микрофон и пел громче всех. Рядом с Кейтаро стояла девушка. Он не знал ее имени, но почему-то знал ее давно.</p>
+      <p>Стаканы на столе были полные, но Масато не выпил ни глотка. Было странно то, что Масато никогда не пел будучи трезвым. Не фальшиво, не смущаясь — а так, словно делал это всю жизнь. Чисто и уверенно. Кейтаро огляделся — никто не удивлялся. Что-то было не так…</p>
+      <p>Кейтаро встал и подошел к Масато. Схватил за плечо.</p>
+      <p>— Ты не Масато.</p>
+      <p>Тот обернулся. Лицо было его — каждая черта, каждая морщина у глаз. Но что-то внутри этого лица было чужим.</p>
+      <p>— Ты прав, — сказал он спокойно, опуская микрофон. — Я не Масато.</p>
+      <p>— Где он?</p>
+      <p>— Я убил его пару дней назад. Прости.</p>
+      <p>Кейтаро почувствовал как комната стала меньше.</p>
+      <p>— Моя планета вымерла, — продолжил Не-Масато тем же ровным голосом, будто объяснял что-то очевидное. — Я последний. Я не хочу умирать один.</p>
+      <p>— Уходи, — сказал Кейтаро. — Немедленно.</p>
+      <p>Существо в теле Масато кивнуло. Потом повернулось к остальным и начало прощаться — с каждым по очереди, спокойно и вежливо. Пожимало руки и обнимало. Кейтаро смотрел и чувствовал как внутри что-то сжимается. Это прощание длилось слишком долго. Слишком тщательно.</p>
+      <p>Потом оно ушло.</p>
+      <p>Кейтаро огляделся. Все продолжали сидеть как ни в чем ни бывало. Сатоши взял чей-то стакан и поставил его не туда. Потом снял кроссовок — правый — и надел его на левую ногу. Никто не заметил.</p>
+      <p>Кейтаро наклонился к девушке рядом.</p>
+      <p>— Это он. Переселился в Сатоши.</p>
+      <p>Она кивнула не удивившись. Они вышли на улицу. Снег лежал у входа нетронутый.</p>
+      <p>— Сатоши, — крикнул Кейтаро. — Почисти снег.</p>
+      <p>Сатоши вышел следом, взял лопату и начал работать. Держал ее не так — двумя руками слишком близко к лезвию. Кейтаро наблюдал.</p>
+      <p>— Если управишься за час — заплачу две тысячи йен.</p>
+      <p>Сатоши начал работать старательнее.</p>
+      <p>Кейтаро повернулся к девушке.</p>
+      <p>— Нам нужно предупредить остальных. Хорошо что у нас есть кодовое слово.</p>
+      <p>— Да, — сказала она.</p>
+      <p>— На счет три. Один… два… три…</p>
+      <p>— Фалафель, — сказал Кейтаро.</p>
+      <p>— Флопатность, — сказала девушка.</p>
+      <p>Кейтаро посмотрел на нее.</p>
+      <p>— Что это за слово?</p>
+      <p>Она не ответила. Он повернул голову в сторону дороги — мимо проезжали машины. В каждой из них лица смотрели прямо на него. Не на дорогу, не в окно — на него. Одинаково и неподвижно.</p>
+      <p>Он хотел было вновь посмотреть на девушку, но это была уже не она.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Кейтаро проснулся посреди ночи и тут же потянулся к телефону. Ослепляющий экран с заметками бил в глаза, но он все равно начал печатать. Он переписал все, что видел во сне, и снова уснул. Кейтаро не до конца понимал для чего он это делает: едва-проснувшийся-мозг хочет показать трезвому-мозгу что интересного было во сне, или едва-проснувшийся-мозг считает что увиденное может послужить потенциальным рассказом.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Кейтаро любил квартиру, которую арендовал уже более трех лет. Небольшая прихожая вела либо в кухню, либо в ванную комнату. Оба пространства были маленькими. На кухне стоял круглый стол с двумя стульями, обогнув который можно было попасть в спальню. В единственной спальне расположились кровать, высокий шкаф и письменный стол, за которым он работал над своей книгой. Стол был единственной мебелью, которую Кейтаро купил для этой квартиры — все остальное завезли предусмотрительные хозяева. Кейтаро был в хороших отношениях с ними. Однажды они даже предлагали привезти ему телевизор, но он вежливо отказался, сказав, что ему вполне хватает ноутбука и телефона.</p>
+      <p>Он понимал, что эта небольшая квартира не предел его мечтаний. Однако здесь он познал что такое «жить одному». Именно здесь, находясь в полном одиночестве, Кейтаро нашел свой уют и покой.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Родители Кейтаро являются гордыми жителями Сайтамы. Город находился в тридцати минутах рельсового пути от Токио, но коренные сайтамцы предпочитали свое спокойное пристанище восточной столице. Кейтаро переехал в Токио после окончания школы вслед за старшей сестрой. Харука вышла замуж и жила в районе Сэтагая. Иногда они виделись за чашкой кофе или Харука приглашала младшего брата в гости. По сравнению с Кейтаро, сестра часто ездила в Сайтаму навестить родителей. Кейтаро же предпочитал планировать такие поездки заранее и в основном делал это по праздникам или когда его приглашали лично.</p>
+      <p>Кэндзи и Ёсико Кимура владели небольшим, но довольно успешным фермерским хозяйством. Кэндзи Кимура унаследовал любовь к садоводству у своего отца и надеялся передать ее своему сыну, но этого не случилось. Окончив курсы по ведению бизнеса, Ёсико отвечала за продвижение и направление их хозяйства. К примеру, в свое время именно Ёсико настояла на том, чтобы они сделали упор именно на шпинате — сейчас это самый продаваемый продукт в их ассортименте и приносит большую часть прибыли.</p>
+      <p>Харука пошла по стопам матери и окончила бизнес-школу. Недавно она открыла свой интернет-магазин и теперь пытается продвигать свой бренд.</p>
+      <p>Что касается самого Кейтаро, то он все еще ищет себя. У него не было ни уверенности родителей, ни амбиций сестры, но совсем недавно он научился не давить на себя. Нравилась ли ему его работа? Временами. Он был уверен, что большинство так относится к своей работе и это вполне нормально. Писателем он себя еще не считал, но напечатать свою первую книгу было его мечтой.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-04.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
