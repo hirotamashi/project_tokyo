@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 6. Наоки — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">春</span>
+      <span>Глава 6 · Весна</span>
+    </div>
+
+    <h1 class="chapter-title">Наоки</h1>
+
+    <div class="prose">
+      <p>Ханами — японская традиция любования цветением сакуры. В это волшебное время вся Япония словно замирает и дает возможность остановиться, отдышаться.</p>
+      <p>Для Наоки это первая весна вдали от дома. В Канадзаве находится один из самых лучших парков для ханами — <span class="term">Кэнрокуэн<span class="note">Кэнрокуэн — один из трёх самых красивых садов Японии, находится в Канадзаве.</span></span>. Более четырех сотен деревьев цветущей сакуры разбросанных по всему парку. По мнению Наоки, каждый японец должен хоть раз увидеть это вживую, а еще лучше — каждая семья.</p>
+      <p>Наоки впервые находится в Токио в это время года, а родителям предстоит первый ханами без Наоки со дня ее рождения. Но они не грустили по этому поводу и договорились созвониться по видеосвязи. Ханами в Канадзаве — это не просто вылазка в парк Наоки с родителями, это целый поход семейства Такэда, или как говорит отец Наоки — клан Такэда. Собираются абсолютно все родственники и проводят время вместе. Никакие отговорки не принимаются, но обычно их и не бывает. Поэтому несмотря на то, что Наоки была единственным ребенком в семье, она не чувствовала себя одинокой будучи частью большого и дружного клана.</p>
+      <p>Кадзуо Такэда обладал невероятной харизмой и располагал уважением всего семейства. Наоки не сомневалась в том, что отец был бы отличным правителем всего государства. Вместо этого отец руководил отделом в местной газете, но очень любил свое дело.</p>
+      <p>Мать Наоки была ее лучшей подругой и всегда поддерживала дочь в любых начинаниях. Мидори Такэда всегда говорила, что не смогла реализовать свой потенциал, но теперь ее судьба — помочь в этом дочери. Мидори очень скучала, но гордилась тем, что Наоки решилась переехать в Токио.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Кейтаро: «Так мы идем в Синдзюку-гёэн?»</p>
+      <p>Аяка: «Там красиво, но не выпьешь.»</p>
+      <p>Масато: «Ёёги»</p>
+      <p>Юта: «+»</p>
+      <p>Рин: «Я с вами. Добавила в чат Наоки.»</p>
+      <p>Масато: «Добро пожаловать!»</p>
+      <p>Аяка: «Добро пожаловать!»</p>
+      <p>Сота: «Добро пожаловать!»</p>
+      <p>Кейтаро: «Добро пожаловать!»</p>
+      <p>Юта: «Добро пожаловать!»</p>
+      <p>Рин: «Наоки, ты как? Ханами послезавтра?»</p>
+      <p>Наоки увидела уведомления лишь к обеду, когда более-менее освободилась от работы. В чате было много сообщений, но она просканировала самое важное и с радостью согласилась присоединиться к компании. Ребята активно обсуждали что будут есть и пить.</p>
+      <p>Наоки: «Я могу приготовить пирог.»</p>
+      <p>Юта: «Отлично, тогда я снова выберу тебе напиток :)»</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Если ханами это поэзия, то холстом для нее послужил бы синий пластиковый коврик на земле, кистями были бы глаза всех присутствующих, в то время как сакура подавала бы им краски.</p>
+      <p>Ранним утром в парке уже кипела жизнь — бегали и играли дети, доносились звуки музыки, смеха, криков. И самое главное — сакура. Своим нежным ароматом она вдыхала в людей эту самую жизнь, повиснув над деревьями розово-белыми облаками.</p>
+      <p>Набрав еду в <span class="term">конбини<span class="note">Конбини — круглосуточный магазин шаговой доступности, есть почти на каждом углу в Токио.</span></span>, друзья уже тоже располагались под пышной сакурой в людном парке Ёёги. Масато и Сота конструировали импровизированное подобие стола по центру брезента. Кейтаро и Юта отправились за напитками, а девочки взялись раскладывать еду и приборы.</p>
+      <p>— Смотрите что у меня есть. — Аяка достала из рюкзака большой термос, когда все дружно разместились.</p>
+      <p>— Кофе? — обрадовалась Рин.</p>
+      <p>— Лучше — <span class="term">канзакэ<span class="note">Канзакэ — подогретое саке, традиционный напиток для холодной погоды и весенних гуляний.</span></span>!</p>
+      <p>— Это гениально, — подхватил Масато.</p>
+      <p>— Да, меня дядя научил, но откроем позже, а то остынет.</p>
+      <p>После того как все поели, парни отошли чтобы покурить. Наоки воспользовалась перерывом и позвонила маме по видеочату. Она прогуливалась по парку и показывала ей окрестности и людей. Мама в свою очередь показала их ханами в парке Кэнрокуэн — все здоровались на камеру и шутя звали Наоки вернуться. Наоки призналась, что в Токио очень красиво, но эта красота не сравнится с цветением сакуры в Канадзаве.</p>
+      <p>С небольшой тоской по семье, через минут пятнадцать Наоки вернулась к друзьям, которые бурно о чем-то спорили.</p>
+      <p>— Все хорошо? — спросил вдруг Кейтаро так, что услышала только она.</p>
+      <p>— Да да, все отлично. Что обсуждаете?</p>
+      <p>— Юта рассказывает о работе, а Аяка настаивает на том, что тема работы во время ханами запрещена.</p>
+      <p>— Вот именно, — подтвердила Аяка. — У тебя на это есть все остальные триста сорок дней в году.</p>
+      <p>— Пятьдесят, — исправил Юта.</p>
+      <p>— А точно… тогда я выберу еще десять дней.</p>
+      <p>Друзья посмеялись.</p>
+      <p>Они много смеялись, спорили, говорили по душам. Наоки в какой-то момент поняла, что друзья отвлекли ее от тоски по дому, и она отлично проводила время.</p>
+      <p>Ближе к вечеру друзья открыли виски и принялись разбавлять хайбол, но Аяка, достав свой термос, первым делом обязала всех выпить по рюмке теплого <span class="term">саке<span class="note">Саке — традиционное японское рисовое вино.</span></span>.</p>
+      <p>— Ты можешь остаться у меня сегодня, — сказала Рин, увидев сомнение в глазах Наоки.</p>
+      <p>— Я? Без проблем, — улыбнулся Юта.</p>
+      <p>Вечернюю сакуру при фонарях называют <span class="term">ёдзакурой<span class="note">Ёдзакура — сакура, которой любуются вечером или ночью при подсветке фонарей.</span></span>. Наоки нравился тот факт, что в японском языке привязывают уникальные слова каждому явлению. Особенно тем, которые того стоили.</p>
+      <p>Когда солнце опустилось за горизонт, парк не опустел — он изменился. Фонари вдоль дорожек зажглись один за другим, и сакура над головой стала другой. Днем она была белой с розовым — нежной и очевидной. Теперь же в теплом свете фонарей лепестки казались почти золотыми. Тени стали глубже, контуры размытее, и весь парк приобрел то особое качество, которое бывает только между днем и ночью.</p>
+      <p>Разговоры вокруг стали тише — не потому что людей стало меньше, а потому что темнота располагает к молчанию. Где-то вдали кто-то играл на гитаре. Лепестки продолжали падать — медленно, без спешки, будто не замечая что день закончился.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-05.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
