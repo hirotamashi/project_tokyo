@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 9. Наоки — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 9 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Наоки</h1>
+
+    <div class="prose">
+      <p>Сезон цветения сакуры завершился. Наоки все реже встречала иностранных туристов на улице. Работа шла своим чередом. Она больше не получала каждодневных указаний от Фудзисавы и самостоятельно выполняла необходимую работу. Токио становился все теплее, и первое лето здесь обещало быть жарким. Наоки чувствовала себя комфортнее в тепле, была первой мерзлячкой и не любила дождь.</p>
+      <p>Под конец рабочего дня понедельника она снова услышала знакомое клацание. Она не видела никого из ребят после их совместного похода в парк Ёёги, да и чат погрузился в тишину. Пройдя между полок, она увидела Кейтаро. Он сидел с ноутбуком в дальнем углу зала и что-то печатал. Наоки вдруг вспомнила первое, что услышала о Кейтаро от Масато. Он сказал, что Кейтаро ходит в библиотеку под видом чтения книг. «Возможно на самом деле он пишет?» — размышляла она. Наоки хотела поздороваться, но не хотела его отвлекать, поэтому пообещала спросить у него при следующей встрече.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Фудзисава-сан давно упоминала о вечернем клубе разговорного английского, который проводили каждую среду в одном из залов библиотеки. Сегодня Наоки впервые решилась его посетить, так как очень стеснялась своего произношения.</p>
+      <p>Дождавшись окончания рабочего дня, Наоки забежала в ближайший конбини и купила себе онигири для быстрого перекуса. Затем направилась в читальный зал, где уже ожидали пять человек, включая Кейтаро.</p>
+      <p>— Привет, Наоки!</p>
+      <p>— Привет! — удивилась она.</p>
+      <p>— Ты здесь как организатор?</p>
+      <p>— Нет нет, я хотела посмотреть как тут у вас.</p>
+      <p>— А, ну я тоже впервые.</p>
+      <p>— Видела тебя сегодня, — Наоки заметила вопросительное выражение на его лице и добавила: — Но ты был занят… и я не стала…</p>
+      <p>— Да, извини, я иногда не замечаю ничего вокруг.</p>
+      <p>— Все хорошо. Ты приходишь поработать?</p>
+      <p>— Можно и так сказать, — он улыбнулся. — Пытаюсь писать.</p>
+      <p>— Это очень круто!</p>
+      <p>— Спасибо, — он немного замялся. — Будет круто, если допишу.</p>
+      <p>— Да, обязательно. Кажется нам пора, — сказала Наоки, заметив что все рассаживаются за стол.</p>
+      <p>Наоки и Кейтаро сели рядом. Ей было немного спокойнее от того, что они оба здесь впервые. Четыре студента и женатая пара в группе были, по всей видимости, завсегдатаями. Самым последним к ним присоединился иностранец, который и лидировал клуб. Высокий, широкоплечий молодой человек со светлыми волосами. Он поздоровался со всеми на английском языке и опустил какую-то шутку, которую Наоки не поняла, но все посмеялись. Она повернулась к Кейтаро — он тоже не смеялся, но улыбнулся ей, поняв что она проверяет в одной ли они лодке. Иностранец представился Нэйтаном, познакомился с новичками и объяснил, что шутка была связана с прошлой сессией. Он коротко рассказал о себе. О том, как восхищаясь японской культурой еще в студенчестве, мечтал здесь побывать. Рассказал о том, что приехал из Лос-Анджелеса в качестве иностранного специалиста для развития молодежной лиги по бейсболу.</p>
+      <p>В качестве основной темы на сегодня Нэйтан выбрал путешествия. Они много говорили о странах, людях, традициях и еде. У Кейтаро оказался весьма неплохой английский, и он активно участвовал во всех обсуждениях. В то время как Наоки по большей части выступала в качестве зрителя и отвечала лишь на вопросы, которые ей задавали напрямую. Несмотря на это, клуб ей понравился — Нэйтан говорил много, демонстрируя звучание американского английского, но при этом терпеливо ждал ответов на свои вопросы. Каждый, не стесняясь, участвовал в беседе, и в зале царила дружелюбная атмосфера. Наоки решила, что будет обязательно посещать клуб, ведь и у нее была мечта однажды посетить Штаты.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-08.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
