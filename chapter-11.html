@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 11. Наоки — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 11 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Наоки</h1>
+
+    <div class="prose">
+      <p>Очередной шумный поздний вечер пятницы. Нетерпеливые мужчины окружили барную стойку со всех сторон, протягивая купюры в обмен на пиво и виски. Наоки довольно неплохо справлялась со своей работой, передавая кружку очередному клиенту. Но у нее жутко болела голова от шума и криков. Вдруг она вспомнила, что ей нужно отнести заказ. Она налила пива в полдюжины кружек и разместила на разносе. Крепко схватилась за края разноса и, открыв ближайшую дверь, оказалась на большом бейсбольном стадионе. Наоки аккуратными и точными шагами продвигалась между рядами. В центре стадиона вместо поля и игроков она увидела воду с весьма активными волнами, но ей это не показалось странным. Дойдя до пункта назначения, она увидела Юту и Кейтаро. Она передала им заказ, но вместо пива удивленный Юта держал в руках книги. Наоки и Кейтаро громко рассмеялись над ним. Обозленный Юта столкнул Наоки, которая стояла прямо у края.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Наоки проснулась в поту. В комнате было очень душно, и она открыла окно. Тихими шагами она поковыляла на кухню, выпила стакан воды и вернулась в свою спальню. Она мысленно собрала картину своего сна по кусочкам и улыбнулась. На секунду ей захотелось написать Кейтаро о том, как они смеялись над Ютой. Именно в ту секунду ей казалось, что Кейтаро бы это понравилось. Полноценно отойдя ото сна, она тут же отказалась от данной затеи. Наоки легла в кровать, покопалась в телефоне и вновь уснула.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Наоки гостила у родной тети Томоэ, и это позволяло ей копить деньги. Конечно, она время от времени приносила продукты домой, хоть тетя и просила этого не делать. Оба-сан Томоэ работала лектором в университете и всю жизнь посвятила литературе. Ее вклад поощрялся хорошим доходом, и Томоэ могла позволить себе жить в большой трехкомнатной квартире одной. Мама Наоки с грустью рассказывала о том, что однажды тетя Томоэ была замужем, но этот брак распался после многочисленных безуспешных попыток завести ребенка. Тетя была сильной женщиной и давно приняла этот факт. Она не избегала этой темы — напротив, сама говорила об этом открыто и шутила, что у нее сотни детей в аудитории. А еще Томоэ ненавидела жалость к себе. Она как-то сказала Наоки за чаем: «Я не хочу, чтобы меня жалели. Я лишь хочу, чтобы мои родные не чувствовали себя неловко или избегали какую-либо тему». Наоки видела в своей тете пример для подражания.</p>
+      <p>Наоки нравилось жить с тетей, однако она не отказалась от своей первоначальной цели — переехать в небольшую квартиру и перевезти Чики в Токио. Наоки никогда не просила, но, скорее всего, тетя была бы против собаки в квартире. Ведь за столько лет жизни в одиночестве Томоэ не завела ни единого питомца. Выгуливание Чики выпало на долю отца, который регулярно присылал фото и видео их прогулок. За их просмотром Наоки одновременно радовалась и грустила.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Это был один из тех редких дней, когда Наоки и Рин могли встретиться. Рин предложила встретиться и поболтать, пообещав не покидать Токио в ближайшие дни. Наоки скучала по единственной подруге, и по сообщениям Рин казалось, что она чувствует себя виноватой перед ней. Однако Наоки так не считала и отвечала, что и сама много работает в последнее время. И это было абсолютной правдой — Наоки не упускала шанса взять дополнительные часы, если кому-то из коллег нужна была замена в ее выходной день.</p>
+      <p>Подруги встретились в кофейне. Около часа обсуждали новости из жизни. У Рин было много забавных историй, которые происходили на борту. Наоки рассказала о работе, о клубе английского языка и о том, что теперь ходит туда вместе с Кейтаро, на что у Рин загорелись глаза.</p>
+      <p>— И как он тебе?</p>
+      <p>— Хороший парень… классно говорит на английском, — замешкалась Наоки.</p>
+      <p>— Не знала, но, наверное, я его меньше всех знаю в компании. Он не такой разговорчивый.</p>
+      <p>Они немного обсудили всех ребят из компании. Рин призналась, что когда-то ей нравился Сота, но он не особо обращал на нее внимание, и она просто отпустила эту ситуацию.</p>
+      <p>— Ты бы смогла сделать первый шаг, если парень так тормозит? — спросила Рин.</p>
+      <p>— Не знаю, наверное, если уверена, что он того стоит.</p>
+      <p>— Хмм, хороший ответ. Вот и я себе так говорю. Если я так легко забила, значит, не мое. О, кстати! Ой, ну это вообще не кстати. В общем, меняем тему, — Рин сама засмеялась от своего потока мыслей вслух. — У меня для тебя есть предложение.</p>
+      <p>— Угу, — Наоки сделала глоток своего капучино.</p>
+      <p>— В общем, я решила переехать к сестре, потому что меня практически не бывает дома. Я уже собиралась написать хозяевам, что освобождаю квартиру, но потом вспомнила про тебя.</p>
+      <p>— Я не уверена, готова ли…</p>
+      <p>— Если ты про деньги, то квартира уже оплачена до конца года моей компанией. Точнее, пятьдесят процентов поступают от компании и пятьдесят нужно платить самой. А в новом году переделаешь договор под себя или найдешь новую квартиру.</p>
+      <p>Они обсудили финансовую часть. Рин убеждала Наоки, что это прекрасный шанс реализовать ее план с переездом Чики. Рин была права. В плане финансов Наоки справлялась без проблем, просто она не ожидала, что такая удача может подвернуться так скоро.</p>
+      <p>— Ты можешь не торопиться с решением. Взвесь все.</p>
+      <p>— Нет, — Наоки задумалась на секунду. — Я согласна.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-10.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
