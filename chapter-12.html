@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 12. Кейтаро — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose > p:first-child::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  /* ---------- Чат-бокс (переписка в мессенджере, тёмная тема) ---------- */
+  .chat{
+    --chat-bg: #1B2128;
+    --chat-head: #151A20;
+    --chat-line: #2B333C;
+    --chat-in: #2D353E;
+    --chat-out: #4C6580;
+    --chat-ink: #ECE8DE;
+    margin: 2em 0;
+    background: var(--chat-bg);
+    border: 1px solid var(--chat-line);
+    border-radius: 16px;
+    color: var(--chat-ink);
+    box-shadow: 0 6px 20px rgba(21,26,32,0.18);
+  }
+
+  .chat-head{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--chat-line);
+    border-radius: 15px 15px 0 0;
+    background: var(--chat-head);
+    font-family: var(--serif-body);
+    font-size: 15px;
+    color: var(--chat-ink);
+  }
+
+  .chat-head .avatar{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--chat-out);
+    color: #F4F1E9;
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .chat-body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px;
+  }
+
+  .msg{
+    max-width: 78%;
+    width: fit-content;
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-family: var(--serif-body);
+    font-size: 16px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .msg.in{
+    align-self: flex-start;
+    background: var(--chat-in);
+    color: var(--chat-ink);
+    border-bottom-left-radius: 5px;
+  }
+
+  .msg.out{
+    align-self: flex-end;
+    background: var(--chat-out);
+    color: #F4F1E9;
+    border-bottom-right-radius: 5px;
+  }
+
+  .msg.in + .msg.out,
+  .msg.out + .msg.in{ margin-top: 9px; }
+
+  /* сноска внутри пузыря: подчёркивание светлое, подсказка прижата к правому краю */
+  .msg .term{ border-bottom-color: rgba(244,241,233,0.75); }
+
+  @media (hover: hover) and (min-width: 561px){
+    .msg.out .term .note{
+      left: auto;
+      right: -6px;
+      transform: translateY(6px);
+    }
+    .msg.out .term .note::after{
+      left: auto;
+      right: 18px;
+      transform: none;
+    }
+    .msg.out .term:hover .note,
+    .msg.out .term.active .note{ transform: translateY(0); }
+  }
+
+  .sr{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 560px){
+    .chat-body{ padding: 14px 12px; }
+    .msg{ max-width: 84%; font-size: 15.5px; }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 12 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Кейтаро</h1>
+
+    <div class="prose">
+      <div class="chat" role="group" aria-label="Переписка Кейтаро и Юи">
+        <div class="chat-head"><span class="avatar" aria-hidden="true">Ю</span><span class="chat-name">Юи</span></div>
+        <div class="chat-body">
+          <div class="msg in"><span class="sr">Юи: </span>Что делаешь?</div>
+          <div class="msg out"><span class="sr">Кейтаро: </span>Смотрю фильм, как твоя тусовка?</div>
+          <div class="msg in"><span class="sr">Юи: </span>Отлично, но надо ехать домой</div>
+          <div class="msg out"><span class="sr">Кейтаро: </span>Да, уже поздновато</div>
+          <div class="msg in"><span class="sr">Юи: </span>А ты не мог бы меня забрать отсюда?</div>
+          <div class="msg out"><span class="sr">Кейтаро: </span>Ты пьяная?</div>
+          <div class="msg in"><span class="sr">Юи: </span>Очень. И тебе советую</div>
+          <div class="msg out"><span class="sr">Кейтаро: </span><span class="term">wwwww<span class="note">wwwww — японский «смех» в переписке: буква «w» от слова warau («смеяться»). Чем больше букв подряд, тем громче смех.</span></span></div>
+          <div class="msg in"><span class="sr">Юи: </span>Шучу, немного выпила. Так что, ты меня заберешь?</div>
+        </div>
+      </div>
+      <p>Кейтаро замешкался с ответом. Ему было немного лень собираться в столь поздний час и ехать непонятно куда.</p>
+      <div class="chat" role="group" aria-label="Переписка Кейтаро и Юи">
+        <div class="chat-head"><span class="avatar" aria-hidden="true">Ю</span><span class="chat-name">Юи</span></div>
+        <div class="chat-body">
+          <div class="msg in"><span class="sr">Юи: </span>Ладно, сделаем вид, что я тебя проверяла</div>
+          <div class="msg out"><span class="sr">Кейтаро: </span>Я не прошел проверку?</div>
+          <div class="msg in"><span class="sr">Юи: </span>Это как посмотреть</div>
+          <div class="msg out"><span class="sr">Кейтаро: </span>Я одеваюсь, а ты скинь мне адрес</div>
+          <div class="msg in"><span class="sr">Юи: </span>Можно и не одеваться ww</div>
+        </div>
+      </div>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Кейтаро нашел Юи у входа в бар, где она встречалась с подругами. Ее волосы были распущены, на ней было свободное черное платье и белые кеды. Она сидела на ступеньках. В одной руке у нее светил телефон, а в другой, между двумя пальцами, была сигарета. Она не заметила приближения Кейтаро.</p>
+      <p>— Разве ты куришь? — тут же удивился Кейтаро.</p>
+      <p>— Нет-нет… Это тебе.</p>
+      <p>Юи поднялась и сделала пару неловких шагов, и Кейтаро обнял ее.</p>
+      <p>— Вкусно пахнешь.</p>
+      <p>— Спасибо, — она немного засмущалась.</p>
+      <p>— Так что с сигаретой?</p>
+      <p>— Я подумала, вдруг ты захочешь покурить.</p>
+      <p>— И ты купила одну сигарету? — улыбнулся Кейтаро.</p>
+      <p>— Нет, конечно. Здесь парни курили минут десять назад. Вот я и попросила меня угостить.</p>
+      <p>Кейтаро рассмеялся, но почувствовал большое тепло к девушке напротив него.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>— Чего не спишь? — тихо прошептала Юи.</p>
+      <p>Они находились в спальне Юи. Кейтаро сложно было засыпать в новом месте, и, зная это, сегодня он даже не старался это сделать. Он открыл заметки в телефоне и принялся перечитывать свои черновики. Обычно это хорошая разминка для мозга, и Кейтаро надеялся на включение тех нейронных связей, которые отвечают за генерацию идей в его голове. Отчасти это сработало, и Кейтаро неплохо продвинулся — написание хоть одной страницы за один подход Кейтаро воспринимал как успех.</p>
+      <p>— Пишу, — так же тихо прошептал он в ответ.</p>
+      <p>— Прости, больше не отвлекаю…</p>
+      <p>— Нет, все хорошо. Тебе не спится?</p>
+      <p>— Ужасно хочу пить.</p>
+      <p>С этими словами она встала с постели, укутала голое тело в плед и вышла из комнаты.</p>
+      <p>Кейтаро нравился тот факт, что Юи знает о его хобби. А еще ему нравилось то, как она относилась к этому — она не спрашивала, когда он планирует завершить, о чем он пишет и когда она сможет почитать.</p>
+      <p>Она вернулась и протянула ему стакан воды.</p>
+      <p>— Знаешь, это очень забавно, — говорила она уже не шепотом, но все еще тихо. — Вот ты сейчас можешь писать где угодно, а раньше писатели себе такое позволить не могли.</p>
+      <p>— Да, согласен.</p>
+      <p>— Ты представляешь, чтобы писать, им приходилось сперва свечку зажечь…</p>
+      <p>— А кому-то и вовсе факел.</p>
+      <p>— Да, это же интересно, как все меняется.</p>
+      <p>— Я боюсь потерять идею или мысль, поэтому по возможности пытаюсь все записывать в заметках. А они, получается, ходили с этой мыслью, и никуда не отпускали ее, пока не организуют себе пергамент с чернилами… ну и свет еще…</p>
+      <p>— Да, именно поэтому это так интересно, — она помолчала пару секунд и добавила: — А ты уже публиковал что-нибудь?</p>
+      <p>— Да, есть один короткий рассказ. Но, если честно, я не знаю, могу ли называть его рассказом. Скорее просто какая-то идея.</p>
+      <p>— Я хочу почитать.</p>
+      <p>— Ты можешь просто забить мое имя и «воображение».</p>
+      <p>— Звучит интригующе, — улыбнулась Юи.</p>
+      <p>Кейтаро немного замялся. Это была одна из первых его работ, которой он не сильно гордился. Юи будто заметила это и сменила тему:</p>
+      <p>— Спасибо, что приехал за мной.</p>
+      <p>В ответ на это Кейтаро обнял Юи. В его голове проскользнула мысль о том, что, вероятно, Юи придает этому его действию слишком большое значение. Возможно, для нее это то, что должен делать парень для своей девушки, но ведь они не пара. Они друзья. Кейтаро сделал это для нее по-дружески. Ему уже приходилось забирать пьяных друзей из клубов, закрывать за них счета, когда приходилось, но сексом это дело не заканчивалось. Эти мысли пролетели в голове Кейтаро за долю секунды, словно торнадо.</p>
+      <p>С одной стороны, рядом с ним лежала прекрасная девушка — красивая, добрая, та, с которой можно было обо всем поговорить; девушка, рядом с которой ему было комфортно; Юи, которая, будучи пьяной, стрельнула для него сигарету у незнакомых парней. Кейтаро даже отложил эту сигарету в нагрудный карман рубашки с целью сохранить ее. Однако с другой стороны Кейтаро не понимал, почему так боялся сблизиться с ней. Он не был уверен, правильное ли здесь слово «боялся», скорее он по какой-то причине этого не хотел. Он читал книги по психологии и знал о том, что есть вещи, которые кажутся нам менее ценными потому, что были приобретены легче, чем мы того ожидали. Юи появилась в его жизни внезапно — во время ханами он не заметил, как она расцвела вместе с сакурой, но, подняв глаза, он уже не мог не увидеть ее. Тем не менее, даже находясь рядом с ней сейчас, он не чувствовал того, что ожидал почувствовать.</p>
+      <p>— Чем займешься сегодня?</p>
+      <p>— Планировала поехать за продуктами. А ты?</p>
+      <p>— Съезжу домой, отосплюсь. Потом пойду в библиотеку, надо вернуть книгу.</p>
+
+      <div class="scene-break"><span></span><span></span><span></span></div>
+
+      <p>Проспав добрую половину дня, он чувствовал себя неважно. Он не был большим любителем долгого сна, и порой даже боялся все проспать. Несмотря на слабость в теле, Кейтаро уже направлялся привычным маршрутом в библиотеку Васэда.</p>
+      <p>На стойке выдачи его встретила взрослая женщина в очках, которую он и раньше видел частенько. Фудзисава приняла книгу и спросила, будет ли он брать что-то еще. Он ответил, что поищет то, что нужно, поклонился в знак благодарности и направился в читальный зал.</p>
+      <p>Излюбленное крыло библиотеки оказалось практически свободным, да и стол, за которым он обычно сидел, не был занят. На весь зал он насчитал лишь три человека. Издалека Кейтаро увидел девушку, которая возилась с горой книг между полками. Предположив, что это Наоки, он достал свой ноутбук из рюкзака и принялся писать.</p>
+      <p>Спустя пару часов он собирался покинуть библиотеку, как вдруг понял, что девушка, которая работала в дальнем конце зала, оказалась вовсе не Наоки. Наоки все это время находилась в читальном зале и что-то конспектировала. Кейтаро узнал ее с трудом, так как, заходя в зал, не приглядывался.</p>
+      <p>— Привет, Наоки, — поздоровался он негромко.</p>
+      <p>— О, привет, — она подняла голову с тетради. — Уже закончил?</p>
+      <p>— Да, поработал немного. Кстати, я вернул Мураками.</p>
+      <p>— Как тебе она?</p>
+      <p>— Отлично, я ее уже во второй раз перечитываю.</p>
+      <p>— Ого, так сильно зацепила?</p>
+      <p>— Да, но в этот раз у меня был более исследовательский подход. Пытаюсь понять, как удержать читателя за книгой.</p>
+      <p>— Все-таки ты и сам пишешь?</p>
+      <p>— Да, — Кейтаро и сам не понял, почему вдруг так откровенно говорил с ней. Ведь можно было на пальцах одной руки пересчитать людей, которые знали о его писательстве. Он держал это в секрете лишь потому, что хотел сперва написать что-то стоящее, прежде чем свободно говорить об этом.</p>
+      <p>— Это очень здорово. Символично, что ты пишешь именно здесь — Мураками ведь окончил Васэда. — Она по-доброму улыбнулась.</p>
+      <p>— Спасибо, а ты чем занята?</p>
+      <p>— Я учу английский, чтобы не отставать от тебя.</p>
+      <p>— О чем ты? Ты хорошо говоришь.</p>
+      <p>— Спасибо, но хочу еще лучше.</p>
+      <p>— Если нужна помощь, я всегда готов. — Кейтаро плюхнулся на стул напротив нее.</p>
+      <p>— Хорошо, спасибо. — Наоки сделала небольшой поклон. — Мне нужна… а хотя нет, ничего, прости…</p>
+      <p>— Что-что? Говори, мне не сложно.</p>
+      <p>— Мне нужна помощь, но не с английским.</p>
+      <p>— А с чем?</p>
+      <p>— Я переезжаю на следующей неделе. Уже нашла машину, но перетаскивать одной будет сложно.</p>
+      <p>— Да без проблем. В какой день?</p>
+      <p>— В субботу.</p>
+      <p>— Я отдыхаю в субботу. Попрошу Масато подъехать на машине, и мы…</p>
+      <p>— Нет, мне неудобно вас просить, — она покачала головой чуть быстрее, чем следовало.</p>
+      <p>— Хорошо, только я. Договорились?</p>
+      <p>— Тебе точно не сложно?</p>
+      <p>— Нисколько.</p>
+      <p>— Большое спасибо! — Наоки кивнула и снова склонилась над тетрадью, но карандаш так и не коснулся страницы.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-11.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
