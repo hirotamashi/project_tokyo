@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 13. Наоки — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 13 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Наоки</h1>
+
+    <div class="prose">
+      <p>Первые дни июня в Токио — это еще не полноценное лето, но весну город уже отпустил. Воздух тяжелел с каждым днем, наполняясь влагой, которую не успевал выветрить даже ветер с залива. Солнце поднималось рано и садилось поздно, и между этими двумя событиями Токио успевал прогреться до той степени, когда асфальт начинает дышать жаром снизу.</p>
+      <p>Это было время до настоящей июльской жары, от которой спасают только метро и конбини. Но до наступления этой самой жары токийцам приходится сперва пережить сезон дождей цую.</p>
+      <p>Переезд на новое место состоялся по плану. Наоки взяла вещи полегче, доверив тяжелые чемоданы Кейтаро. За два подхода он сумел занести весь багаж. Кейтаро переступил порог квартиры с коробкой книг на руках.</p>
+      <p>— Это все, — сказал он, вытирая пот рукавом футболки. — Куда эту коробку?</p>
+      <p>— Ее можно сюда.</p>
+      <p>Кейтаро разулся и занес коробку в уже охлажденную комнату.</p>
+      <p>— Спасибо большое! — Наоки поклонилась.</p>
+      <p>— Пожалуйста, — Кейтаро улыбнулся. — Хорошо здесь.</p>
+      <p>— Да. Ты не голоден? — Наоки подала ему стакан холодной воды.</p>
+      <p>— Нет.</p>
+      <p>Кейтаро за раз осушил стакан и приложил его ко лбу.</p>
+      <p>— Я налью еще.</p>
+      <p>— А ты сама не голодна?</p>
+      <p>— Пока нет, но планирую что-нибудь приготовить. Ты дождешься?</p>
+      <p>— Тебе нужно еще с чем-то помочь?</p>
+      <p>— Нет, с вещами все, спасибо еще раз!</p>
+      <p>— Хорошо, тогда я, наверное, поеду. Есть еще кое-какие дела.</p>
+      <p>Кейтаро вышел в коридор и начал обуваться. По ощущениям Наоки одного «спасибо» было недостаточно, учитывая, как вспотел Кейтаро, поднимая тяжелые чемоданы в столь жаркий день.</p>
+      <p>— Я обязана тебя покормить.</p>
+      <p>— Нет, все нормально, — отмахнулся Кейтаро.</p>
+      <p>— Тогда давай в следующий раз, — настаивала Наоки.</p>
+      <p>— Хорошо, — он улыбнулся.</p>
+      <p>Она улыбнулась в ответ.</p>
+      <p>— Тогда в среду, после клуба английского. Ты же придешь?</p>
+      <p>— Да, договорились.</p>
+      <p>С этими словами Кейтаро попрощался и ушел. Наоки еще раз осмотрела всю квартиру: небольшая гостиная, отдельная спальня и кухня. Она уже представляла, каким образом следует обставить свой новый дом, но первым делом нужно было разобрать вещи. Рин оставила квартиру в Синагаве в распоряжении Наоки, улетев в очередной рейс.</p>
+      <p>Она стояла в центре гостиной и смотрела на свои вещи. В тот момент ощущения полноценного переезда еще не было. Посмотрев на коробку с книгами, которую Кейтаро занес последней, она невольно вспомнила работу, поэтому решила распаковать книги в последнюю очередь.</p>
+      <p>Наоки не знала, каково это — жить одной, но полная свобода действий постепенно начинала ее очаровывать. После того как с вещами было покончено, она надела самые короткие шортики, свободную майку без лифчика, собрала волосы в пучок и принялась за уборку, напевая себе под нос. Наконец она добралась до коробки с книгами. Наоки уже освободила полку в гостиной, убрав вещи Рин в коробку, как та и просила. Она держала в одной руке стакан воды, а второй доставала книги в твердом переплете, усевшись на пол рядом с коробкой. В ее коллекции, помимо японских писателей, были и зарубежные. В детстве она неотрывно читала Гарри Поттера. Пять из семи книг о мальчике, который выжил, лежали сейчас в этой коробке. Парочка подаренных книг Достоевского, до которых она все еще не добралась, тоже нашлась в коробке. Работы таких великих писателей, как Стивен Кинг, Харуки Мураками, Пауло Коэльо, Эрнест Хемингуэй и Брендон Сандерсон уже расположились на полке. Последней книгой из коробки оказался «Шантарам» Грегори Дэвида Робертса. Среди всех этих громких имен именно этой книгой она тихо гордилась. Невероятная история человека, который написал о своей жизни на туалетной бумаге, находясь в тюрьме, где его рукописи дважды были уничтожены охранниками. Она держала «Шантарам» в руке, и ей почему-то стало интересно, читал ли эту книгу Кейтаро.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-12.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
