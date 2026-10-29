@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 15. Наоки — Tokyo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0 0 1.4em;
+  }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  /* подсказки к многострочным английским репликам: на десктопе привязаны к абзацу */
+  @media (hover: hover) and (min-width: 561px){
+    .prose p.tr{ position: relative; }
+    .prose p.tr .term{ position: static; }
+    .prose p.tr .term .note{
+      left: 0;
+      bottom: calc(100% + 8px);
+      transform: translateY(6px);
+      max-width: min(380px, 100%);
+    }
+    .prose p.tr .term .note::after{ left: 28px; transform: none; }
+    .prose p.tr .term:hover .note,
+    .prose p.tr .term.active .note{ transform: translateY(0); }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 15 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Наоки</h1>
+
+    <div class="prose">
+      <p>Хватает ли одного душевного разговора между двумя людьми, чтобы сблизиться? За два-три часа в <span class="term">идзакае<span class="note">Идзакая — японский бар-закусочная: выпивка и небольшие блюда, место для посиделок после работы.</span></span> Кэйтаро предстал совершенно другим человеком в глазах Наоки. Она думала о нём, когда встретилась с Рин тем же вечером и на следующий день, заполняя журналы на работе. Вероятно, это результат собирательного образа Кэйтаро с момента их знакомства — на вечере знакомства он был сдержаннее остальных парней, и она не помнит, чтобы они обменивались словами лично; при встрече в библиотеке он был более разговорчив и даже отпустил пару шуток; в клубе английского он часто рассказывает интересные вещи из жизни; а затем он вызвался помочь ей с переездом, не ожидая ничего взамен. В идзакае первые полчаса, возможно, и прошли в молчании, но Наоки не чувствовала себя неловко рядом с ним. А когда они всё же начали говорить, казалось, будто старые друзья встретились после долгой разлуки.</p>
+      <p>В пятницу Наоки взяла заслуженный выходной и проводила это время дома, занимаясь уборкой. За окном всё так же шёл дождь, поэтому прогулка по парку отменилась. Увидев свою книжную полку, она вновь невольно подумала о нём. Книги, библиотека, клуб английского, Кэйтаро — наверное, именно такая цепочка ассоциаций выстроилась в её голове. Также она вспомнила, что совсем забыла спросить у Кэйтаро, читал ли он одну из её любимых книг.</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>Юта: «Караоке»</p>
+      <p>Она увидела единственное сообщение от Юты в групповом чате и улыбнулась. Ни приветствия, ни вопросительного знака, просто одно слово, ожидающее, когда к нему магнитом притянутся другие.</p>
+      <p>Масато: «И пиво»</p>
+      <p>Аяка: «В 7»</p>
+      <p>Наоки не планировала сегодня покидать своё убежище, но решила подождать, что скажет Рин. Но когда и Кэйтаро ответил положительно, она уже настроилась, что всё-таки тоже присоединится.</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>Сбор состоялся в одном из филиалов популярной сети караоке, который расположился в Сибуе. В заведении было несколько этажей с разнообразными кабинками. Их кабинка оказалась преимущественно красного цвета с чёрными элементами. На красных стенах горели небольшие современные лампы тёплого оттенка, деревянный стол в центре комнаты словно находился в объятиях чёрного кожаного дивана с трёх сторон.</p>
+      <p>Аяка и Рин уже пели песню из аниме, когда пришла Наоки. Парни подтянулись позже: Масато вместе с Ютой, а Кэйтаро — отдельно, последним. Друзья договорились прийти сытыми, поэтому заказали только выпивку. Наоки сперва стеснялась петь, но, пропустив пару стаканов, уже не хотела упускать такого веселья. Они пели и пили три часа, затем направились в ближайшую идзакаю. Все, кроме Рин, которую ждала работа на выходных.</p>
+      <p>В идзакае ребята первым делом заказали поесть. Затем заказали ещё выпивки и болтали до глубокой ночи. Аяка решила первой отсоединиться от оставшейся пятёрки, явно перебрав пива. После чего не менее пьяный Масато вызвался проводить одноклассницу до дома.</p>
+      <p>— Теперь ты моя любимица в нашей группе, — говорил Юта своим охрипшим голосом, смотря на Наоки. — Эти слабые ребята ушли, а ты осталась.</p>
+      <p>— А как же Кэйтаро? Он тоже тут.</p>
+      <p>— Кэйтаро самый сильный среди нас.</p>
+      <p>Кэйтаро рассмеялся.</p>
+      <p>Парни рассказали пару смешных историй со школьных времён. Юта учился на пару классов ниже Кэйтаро и Масато, которые были одноклассниками. Она узнала, что Масато был популярным в школе, и все знали его по спортивным достижениям.</p>
+      <p>— Кэйтаро я вообще никогда не видел.</p>
+      <p>— <span class="term">Exaggeration!<span class="note">Преувеличение!</span></span> — воскликнул Кэйтаро.</p>
+      <p>— Что? — не понял Юта.</p>
+      <p>Наоки и Кэйтаро переглянулись и улыбнулись.</p>
+      <p>— Это ещё что? Ты его поняла?</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>Они сидели до самого утра, дожидаясь прибытия первого поезда. Кэйтаро и Наоки обсуждали лучшие заведения Токио, в которых они бывали. Юта с кем-то переписывался, но уснул прямо за столом. Когда они покидали идзакаю, официант проводил их до самой входной двери, выражая тем самым свою признательность. Друзья, в свою очередь, поблагодарили его поклонами и обещали вернуться.</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>Токио на рассвете — совсем другой город. Улицы, которые несколько часов назад гудели музыкой и голосами, теперь почти пусты. Только редкие прохожие, уборщики с мётлами и первые велосипедисты. Воздух после ночного дождя влажный и свежий, асфальт ещё тёмный от воды. Где-то на полпути начинают петь первые птицы. Токио просыпается не сразу — сначала звуки, потом запахи. Кофе из только что открывшегося конбини.</p>
+      <p>— Уютное место, — сказал пьяный Юта, когда они вышли. — <span class="term">Кэйтаро-сан<span class="note">«-сан» — вежливое обращение, примерно «господин». Между друзьями звучит шутливо.</span></span>, надеюсь, ты в состоянии проводить даму до дома. Меня кое-где ждут.</p>
+      <p>— Не вопрос, — ответил Кэйтаро.</p>
+      <p>Наоки улыбнулась Юте.</p>
+      <p>— Было весело, надо повторить, — сказал Юта на прощание, прежде чем покинуть их.</p>
+      <p>Наоки и Кэйтаро направились к станции Сибуя. По линии <span class="term">Яманотэ<span class="note">Яманотэ — кольцевая линия электричек JR, соединяющая главные районы Токио.</span></span> им было в разные стороны: Кэйтаро — три остановки на север, до Синдзюку, Наоки — пять на юг, до Синагавы.</p>
+      <p>— Ты как? Я думаю посадить тебя на поезд, а сам, наверное, пройдусь. Мне пешком минут тридцать.</p>
+      <p>— Хорошо, — отозвалась Наоки. — Но я бы могла пройтись с тобой до Синдзюку.</p>
+      <p>— Отлично, а ты не устала?</p>
+      <p>— Нет, нужно немного развеяться.</p>
+      <p><span class="term">Мэйдзи-дори<span class="note">Мэйдзи-дори — один из главных проспектов Токио: тянется от Сибуи через Харадзюку к Синдзюку.</span></span> — широкий проспект, соединяющий Сибую и Синдзюку. Слева и справа закрытые вывески магазинов, витрины отражают бледное утреннее небо. Светофоры переключаются сами для себя — машин почти нет. На полпути район меняется — становится тише, жилые дома вместо магазинов, деревья вдоль тротуара. Кое-где уже открыты маленькие пекарни — запах свежего хлеба выходит прямо на улицу.</p>
+      <p>Большую часть дороги они шли молча, не нарушая заслуженную городом тишину. Ближе к Синдзюку они встретили лишь пару человек с кофе, группу пожилых на утренней прогулке и нескольких спортсменов. Ритм этих редких прохожих отличался от ритма Наоки и Кэйтаро — они никуда не спешили, разглядывая улицы, вывески, дома и людей. Впервые у Наоки появилось ощущение, что она уже не гость в этом невероятном мегаполисе. Она чувствовала, что она там, где и должна быть: рядом с ней Кэйтаро, а в этот конкретный момент Токио принадлежал только им.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-14.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+</body>
+</html>
