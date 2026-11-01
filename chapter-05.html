@@ -113,6 +113,10 @@
     margin: 0 0 1.4em;
   }
 
+  /* абзацный отступ; у первого абзаца с буквицей его нет */
+  .prose p{ text-indent: 1.5em; }
+  .prose p:first-of-type{ text-indent: 0; }
+
   .prose p:first-of-type::first-letter{
     font-family: var(--serif-display);
     font-style: italic;
