@@ -203,6 +203,126 @@
     }
   }
 
+  /* ---------- Чат-бокс (переписка в мессенджере, тёмная тема) ---------- */
+  .chat{
+    --chat-bg: #1B2128;
+    --chat-head: #151A20;
+    --chat-line: #2B333C;
+    --chat-in: #2D353E;
+    --chat-out: #4C6580;
+    --chat-ink: #ECE8DE;
+    margin: 2em 0;
+    background: var(--chat-bg);
+    border: 1px solid var(--chat-line);
+    border-radius: 16px;
+    color: var(--chat-ink);
+    box-shadow: 0 6px 20px rgba(21,26,32,0.18);
+  }
+
+  .chat-head{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--chat-line);
+    border-radius: 15px 15px 0 0;
+    background: var(--chat-head);
+    font-family: var(--serif-body);
+    font-size: 15px;
+    color: var(--chat-ink);
+  }
+
+  .chat-head .avatar{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--chat-out);
+    color: #F4F1E9;
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .chat-body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px;
+  }
+
+  .msg{
+    max-width: 78%;
+    width: fit-content;
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-family: var(--serif-body);
+    font-size: 16px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .msg.in{
+    align-self: flex-start;
+    background: var(--chat-in);
+    color: var(--chat-ink);
+    border-bottom-left-radius: 5px;
+  }
+
+  .msg.out{
+    align-self: flex-end;
+    background: var(--chat-out);
+    color: #F4F1E9;
+    border-bottom-right-radius: 5px;
+  }
+
+  .msg.in + .msg.out,
+  .msg.out + .msg.in{ margin-top: 9px; }
+
+  /* сноска внутри пузыря: подчёркивание светлое, подсказка прижата к правому краю */
+  .msg .term{ border-bottom-color: rgba(244,241,233,0.75); }
+
+  @media (hover: hover) and (min-width: 561px){
+    .msg.out .term .note{
+      left: auto;
+      right: -6px;
+      transform: translateY(6px);
+    }
+    .msg.out .term .note::after{
+      left: auto;
+      right: 18px;
+      transform: none;
+    }
+    .msg.out .term:hover .note,
+    .msg.out .term.active .note{ transform: translateY(0); }
+  }
+
+  .sr{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 560px){
+    .chat-body{ padding: 14px 12px; }
+    .msg{ max-width: 84%; font-size: 15.5px; }
+  }
+
+  /* групповой чат: имя отправителя над сообщением */
+  .msg .from{
+    display: block;
+    font-size: 12.5px;
+    color: #9FB3C8;
+    margin-bottom: 1px;
+    letter-spacing: 0.02em;
+  }
+
   /* подсказки к многострочным английским репликам: на десктопе привязаны к абзацу */
   @media (hover: hover) and (min-width: 561px){
     .prose p.tr{ position: relative; }
@@ -294,10 +414,20 @@
       <p>Хватает ли одного душевного разговора между двумя людьми, чтобы сблизиться? За два-три часа в <span class="term">идзакае<span class="note">Идзакая — японский бар-закусочная: выпивка и небольшие блюда, место для посиделок после работы.</span></span> Кэйтаро предстал совершенно другим человеком в глазах Наоки. Она думала о нём, когда встретилась с Рин тем же вечером и на следующий день, заполняя журналы на работе. Вероятно, это результат собирательного образа Кэйтаро с момента их знакомства — на вечере знакомства он был сдержаннее остальных парней, и она не помнит, чтобы они обменивались словами лично; при встрече в библиотеке он был более разговорчив и даже отпустил пару шуток; в клубе английского он часто рассказывает интересные вещи из жизни; а затем он вызвался помочь ей с переездом, не ожидая ничего взамен. В идзакае первые полчаса, возможно, и прошли в молчании, но Наоки не чувствовала себя неловко рядом с ним. А когда они всё же начали говорить, казалось, будто старые друзья встретились после долгой разлуки.</p>
       <p>В пятницу Наоки взяла заслуженный выходной и проводила это время дома, занимаясь уборкой. За окном всё так же шёл дождь, поэтому прогулка по парку отменилась. Увидев свою книжную полку, она вновь невольно подумала о нём. Книги, библиотека, клуб английского, Кэйтаро — наверное, именно такая цепочка ассоциаций выстроилась в её голове. Также она вспомнила, что совсем забыла спросить у Кэйтаро, читал ли он одну из её любимых книг.</p>
       <div class="scene-break"><span></span><span></span><span></span></div>
-      <p>Юта: «Караоке»</p>
+      <div class="chat" role="group" aria-label="Групповой чат друзей">
+        <div class="chat-head"><span class="avatar" aria-hidden="true">友</span><span class="chat-name">Друзья</span></div>
+        <div class="chat-body">
+          <div class="msg in"><span class="from">Юта</span><span class="sr">: </span>Караоке</div>
+        </div>
+      </div>
       <p>Она увидела единственное сообщение от Юты в групповом чате и улыбнулась. Ни приветствия, ни вопросительного знака, просто одно слово, ожидающее, когда к нему магнитом притянутся другие.</p>
-      <p>Масато: «И пиво»</p>
-      <p>Аяка: «В 7»</p>
+      <div class="chat" role="group" aria-label="Групповой чат друзей">
+        <div class="chat-head"><span class="avatar" aria-hidden="true">友</span><span class="chat-name">Друзья</span></div>
+        <div class="chat-body">
+          <div class="msg in"><span class="from">Масато</span><span class="sr">: </span>И пиво</div>
+          <div class="msg in"><span class="from">Аяка</span><span class="sr">: </span>В 7</div>
+        </div>
+      </div>
       <p>Наоки не планировала сегодня покидать своё убежище, но решила подождать, что скажет Рин. Но когда и Кэйтаро ответил положительно, она уже настроилась, что всё-таки тоже присоединится.</p>
       <div class="scene-break"><span></span><span></span><span></span></div>
       <p>Сбор состоялся в одном из филиалов популярной сети караоке, который расположился в Сибуе. В заведении было несколько этажей с разнообразными кабинками. Их кабинка оказалась преимущественно красного цвета с чёрными элементами. На красных стенах горели небольшие современные лампы тёплого оттенка, деревянный стол в центре комнаты словно находился в объятиях чёрного кожаного дивана с трёх сторон.</p>
