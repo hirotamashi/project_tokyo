@@ -4,6 +4,7 @@
 
 Что делает (можно запускать сколько угодно раз — результат одинаковый):
   1. картинки-превью для ссылок: assets/og/chapter-NN.png и assets/og/index.png;
+     если есть иллюстрация автора assets/og/art/chapter-NN.jpg (1200×630), берётся она;
   2. блок в <head> каждой страницы между <!-- site:head --> и <!-- /site:head -->:
      иконка, описание, Open Graph/Twitter-превью, подключение assets/reader.css и reader.js;
   3. glossary.html — словарь японских слов из сносок (<span class="term">…<span class="note">…);
@@ -227,7 +228,9 @@ def main():
 
     for ch in chs:
         page = read(ch['file'])
-        img = og_chapter(ch, cjk)
+        art = f"assets/og/art/chapter-{ch['n']:02d}.jpg"
+        # иллюстрация автора (1200×630) важнее сгенерированной обложки
+        img = art if os.path.exists(os.path.join(ROOT, art)) else og_chapter(ch, cjk)
         title = f"Глава {ch['n']}. {ch['name']}"
         page = re.sub(r'<title>.*?</title>', f'<title>{title} — {SITE}</title>', page, count=1)
         page = put_head(page, head_block(title, first_sentence(page), img, BASE_URL + ch['file'], 'article'))
