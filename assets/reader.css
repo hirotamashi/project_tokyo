@@ -124,3 +124,13 @@ html .prose{ font-size: calc(18px * var(--fs, 1)); }
   border-bottom: 1px solid var(--line);
 }
 .glossary-link:hover{ color: var(--ink); border-bottom-color: var(--ink-soft); }
+
+/* ---------- Отрывок из рукописи героя ---------- */
+.prose p.excerpt{
+  font-style: italic;
+  text-indent: 0;
+  margin: 1.4em 0 1.4em 0.4em;
+  padding-left: 1.1em;
+  border-left: 2px solid var(--line);
+  color: var(--ink-soft);
+}

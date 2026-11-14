@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Глава 18. Кэйтаро — Токио между нами</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,500;0,600;1,500&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #EDEAE3;
+    --bg-raised: #F4F1E9;
+    --ink: #1C1B19;
+    --ink-soft: #6B655A;
+    --ink-faint: #A39C8C;
+    --accent: #3B4A5A;
+    --line: #CFC8BA;
+
+    --serif-display: 'Cormorant', serif;
+    --serif-body: 'PT Serif', serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ -webkit-font-smoothing: antialiased; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif-body);
+    padding: 0 24px;
+  }
+
+  a{ color: inherit; }
+
+  .page{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 56px 0 80px;
+  }
+
+  @media (max-width: 560px){
+    .page{ padding: 40px 0 56px; }
+  }
+
+  .back{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .back:hover, .back:focus-visible{
+    border-bottom-color: var(--ink-soft);
+  }
+
+  .back:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 48px 0 18px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .eyebrow .glyph{
+    font-family: var(--serif-display);
+    font-size: 16px;
+    font-style: italic;
+  }
+
+  .eyebrow::after{
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  h1.chapter-title{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 34px;
+    line-height: 1.15;
+    margin: 0 0 48px;
+  }
+
+  .prose{
+    font-size: 18px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+
+  .prose p{
+    margin: 0;
+  }
+
+  /* абзацный отступ; у первого абзаца с буквицей его нет */
+  .prose p{ text-indent: 1.5em; }
+  .prose p:first-of-type{ text-indent: 0; }
+
+  .prose p:first-of-type::first-letter{
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 3.4em;
+    line-height: 0.8;
+    float: left;
+    margin: 0.06em 0.1em 0 0;
+    color: var(--accent);
+  }
+
+  .term{
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+  }
+
+  .term .note{
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + 10px);
+    transform: translateX(-50%) translateY(6px);
+    width: max-content;
+    max-width: min(240px, calc(100vw - 48px));
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-family: var(--serif-body);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 20;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .term .note::after{
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--line);
+  }
+
+  @media (hover: hover){
+    .term:hover .note{ opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+  }
+
+  .term.active .note{
+    opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); pointer-events: auto;
+  }
+
+  .note-backdrop{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(28,27,25,0.15);
+    z-index: 15;
+  }
+
+  .note-backdrop.visible{ display: block; }
+
+  @media (hover: none), (max-width: 560px){
+    .term .note{
+      position: fixed;
+      left: 16px;
+      right: 16px;
+      bottom: 24px;
+      top: auto;
+      width: auto;
+      max-width: none;
+      transform: translateY(8px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+    }
+
+    .term .note::after{
+      display: none;
+    }
+
+    .term.active .note{
+      transform: translateY(0);
+    }
+  }
+
+  /* ---------- Чат-бокс (переписка в мессенджере, тёмная тема) ---------- */
+  .chat{
+    --chat-bg: #1B2128;
+    --chat-head: #151A20;
+    --chat-line: #2B333C;
+    --chat-in: #2D353E;
+    --chat-out: #4C6580;
+    --chat-ink: #ECE8DE;
+    margin: 2em 0;
+    background: var(--chat-bg);
+    border: 1px solid var(--chat-line);
+    border-radius: 16px;
+    color: var(--chat-ink);
+    box-shadow: 0 6px 20px rgba(21,26,32,0.18);
+  }
+
+  .chat-head{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--chat-line);
+    border-radius: 15px 15px 0 0;
+    background: var(--chat-head);
+    font-family: var(--serif-body);
+    font-size: 15px;
+    color: var(--chat-ink);
+  }
+
+  .chat-head .avatar{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--chat-out);
+    color: #F4F1E9;
+    font-family: var(--serif-display);
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .chat-body{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 16px;
+  }
+
+  .msg{
+    max-width: 78%;
+    width: fit-content;
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-family: var(--serif-body);
+    font-size: 16px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .msg.in{
+    align-self: flex-start;
+    background: var(--chat-in);
+    color: var(--chat-ink);
+    border-bottom-left-radius: 5px;
+  }
+
+  .msg.out{
+    align-self: flex-end;
+    background: var(--chat-out);
+    color: #F4F1E9;
+    border-bottom-right-radius: 5px;
+  }
+
+  .msg.in + .msg.out,
+  .msg.out + .msg.in{ margin-top: 9px; }
+
+  /* сноска внутри пузыря: подчёркивание светлое, подсказка прижата к правому краю */
+  .msg .term{ border-bottom-color: rgba(244,241,233,0.75); }
+
+  @media (hover: hover) and (min-width: 561px){
+    .msg.out .term .note{
+      left: auto;
+      right: -6px;
+      transform: translateY(6px);
+    }
+    .msg.out .term .note::after{
+      left: auto;
+      right: 18px;
+      transform: none;
+    }
+    .msg.out .term:hover .note,
+    .msg.out .term.active .note{ transform: translateY(0); }
+  }
+
+  .sr{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 560px){
+    .chat-body{ padding: 14px 12px; }
+    .msg{ max-width: 84%; font-size: 15.5px; }
+  }
+
+  /* групповой чат: имя отправителя над сообщением */
+  .msg .from{
+    display: block;
+    font-size: 12.5px;
+    color: #9FB3C8;
+    margin-bottom: 1px;
+    letter-spacing: 0.02em;
+  }
+
+  /* подсказки к многострочным английским репликам: на десктопе привязаны к абзацу */
+  @media (hover: hover) and (min-width: 561px){
+    .prose p.tr{ position: relative; }
+    .prose p.tr .term{ position: static; }
+    .prose p.tr .term .note{
+      left: 0;
+      bottom: calc(100% + 8px);
+      transform: translateY(6px);
+      max-width: min(380px, 100%);
+    }
+    .prose p.tr .term .note::after{ left: 28px; transform: none; }
+    .prose p.tr .term:hover .note,
+    .prose p.tr .term.active .note{ transform: translateY(0); }
+  }
+
+  .scene-break{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 2.2em 0;
+  }
+
+  .scene-break span{
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--ink-faint);
+  }
+
+  .chapter-footer{
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .nav-row{
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .nav-row .prev,
+  .nav-row .next-placeholder{
+    color: var(--ink-faint);
+  }
+
+  .nav-row .prev.is-link,
+  .nav-row .next{
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row .prev.is-link:hover,
+  .nav-row .next:hover{ border-bottom-color: var(--ink-soft); }
+
+  .colophon{
+    margin-top: 28px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  .colophon a{
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+</style>
+<!-- site:head (собирается tools/build_site.py — правки вручную перезапишутся) -->
+<meta name="description" content="В детстве мама рассказывала ему легенду о красной нити судьбы, и Кэйтаро запомнил её на всю жизнь.">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta name="theme-color" content="#EDEAE3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15171B" media="(prefers-color-scheme: dark)">
+<meta property="og:site_name" content="Токио между нами">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Глава 18. Кэйтаро">
+<meta property="og:description" content="В детстве мама рассказывала ему легенду о красной нити судьбы, и Кэйтаро запомнил её на всю жизнь.">
+<meta property="og:url" content="https://hirotamashi.github.io/project_tokyo/chapter-18.html">
+<meta property="og:image" content="https://hirotamashi.github.io/project_tokyo/assets/og/chapter-18.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/reader.css">
+<script src="assets/reader.js"></script>
+<!-- /site:head -->
+</head>
+<body>
+  <main class="page">
+
+    <a class="back" href="index.html">← Оглавление</a>
+
+    <div class="eyebrow">
+      <span class="glyph">夏</span>
+      <span>Глава 18 · Лето</span>
+    </div>
+
+    <h1 class="chapter-title">Кэйтаро</h1>
+
+    <div class="prose">
+      <p>В детстве мама рассказывала ему легенду о красной нити судьбы, и Кэйтаро запомнил её на всю жизнь. Проснувшись посреди ночи, он сел за стол, включил ноутбук, создал новый файл и начал писать. Он думал о Наоки, когда писал следующее:</p>
+      <p class="excerpt">«В японской культуре любовь часто изображается не как вспышка страсти, а как неизбежное пересечение судеб. Он и она могут расстаться на годы, потерять друг друга или даже не признаться в чувствах, но связь между ними продолжает существовать. Согласно легенде, боги связывают красной нитью двух людей, которым суждено быть вместе. Нить связывает мизинцы двух людей, может растягиваться и запутываться, может пройти через годы и расстояния, но никогда не рвётся».</p>
+      <p>Он вдохновился невероятной историей о том, как однажды в будущем он покажет Наоки свои записи и расскажет, что начал писать о них, когда они познакомились. Она ответит ему, что ничего более романтичного никогда не видела. Он спрятал Наоки под маской созданного им персонажа и продолжил писать.</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>Наоки пропустила предыдущий клуб английского, уехав в Канадзаву к родителям. Кэйтаро надеялся увидеть её в эту среду, как обычно придя в библиотеку Васэда заранее. Она пришла с опозданием и села рядом с ним. Нэйтан предложил тему спорта в Японии и рассказывал о грядущем чемпионате мира по футболу, который должен пройти в трёх странах — США, Канаде и Мексике.</p>
+      <p class="tr">— <span class="term">I think this World Cup will be a big deal for Japan. And I expect to see them at least in the playoffs.<span class="note">Думаю, этот чемпионат мира станет большим событием для Японии. И я рассчитываю увидеть их хотя бы в плей-офф.</span></span></p>
+      <p>Кэйтаро не особо следил за футболом или любым другим видом спорта, но взял на заметку мысли американца, чтобы пересказать их Масато при встрече. Масато и Сота часто обсуждали спортивные матчи. Наоки тоже редко подключалась к беседе, и, по наблюдениям Кэйтаро, была немного зажата. Он решил, что, пожалуй, сегодня Нэйтан прогадал с темой сессии.</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>— Наоки-сан, можете, пожалуйста, задержаться? — попросил Нэйтан на японском, когда попрощался со всеми участниками клуба.</p>
+      <p>Кэйтаро вышел из библиотеки и ждал её у входа. Не успел он достать сигарету, как Наоки тоже вышла из библиотеки.</p>
+      <p>— Привет ещё раз!</p>
+      <p>— Привет! Как Канадзава?</p>
+      <p>— Отлично. Намного спокойнее, чем здесь.</p>
+      <p>— Хочешь пойти поужинать? Заодно и расскажешь.</p>
+      <p>От волнения Кэйтаро ногтем большого пальца по очереди касался подушечек остальных пальцев в кармане.</p>
+      <p>— Прости, я сегодня занята.</p>
+      <p>— Без проблем, можем в следующий раз.</p>
+      <p>— Да, обязательно. — Наоки чуть поклонилась.</p>
+      <p>— Тогда до следующей среды. — Он неловко поклонился в ответ.</p>
+      <p>Его глубоко разочаровал тот факт, что он не увидит Наоки ещё неделю.</p>
+      <p>Они разошлись в разные стороны — он направился домой пешком, а Наоки пошла в сторону станции Синдзюку. Пошёл дождь. «Как драматично», — подумал Кэйтаро, зажигая сигарету. Казалось, токийское небо дожидалось этого момента.</p>
+      <p>Он шёл по улицам, заполненным людьми. Те, кто был без зонтов, двигались намного быстрее, спешили укрыться от дождя в заведениях или направлялись в сторону станции, пробегая мимо Кэйтаро. Он и сам сегодня не взял с собой зонт. Поэтому дошёл до дома, промокнув до нитки.</p>
+      <div class="scene-break"><span></span><span></span><span></span></div>
+      <p>Приняв душ, Кэйтаро нашёл в шкафу бутылку с яблочным виски, на дне которой вряд ли насчитывались сто граммов алкоголя. Он вспомнил, что распивали они эту бутылку вместе с Юи, когда она впервые пришла к нему в гости. В холодильнике не осталось содовой, поэтому он налил себе чистый виски и принялся читать рассказы <span class="term">Рюноскэ Акутагавы<span class="note">Рюноскэ Акутагава (1892–1927) — классик японской новеллы, автор «Расёмона» и «В чаще». Именем Акутагавы названа главная литературная премия Японии для молодых авторов.</span></span>. Минут через десять, когда стакан уже был опустошён, он понял, что не может сконцентрироваться на чтении. Кэйтаро достал телефон и написал Юи с предложением выпить. Спустя час он уже сидел в идзакае недалеко от <span class="term">канала Мэгуро<span class="note">Мэгуро — река-канал на юго-западе Токио. Весной её берега превращаются в один из самых известных коридоров цветущей сакуры в городе.</span></span>, дожидаясь её прихода.</p>
+    </div>
+
+    <div class="chapter-footer">
+      <div class="nav-row">
+        <a class="prev is-link" href="chapter-17.html">← Пред. глава</a>
+        <span class="next-placeholder">След. глава — через 7 дней</span>
+      </div>
+
+      <p class="colophon">Токио · Хиро Тамаши · <a href="https://t.me/+_HiH-VEV-UIyMGQy">Обсудить в Telegram →</a></p>
+    </div>
+
+  </main>
+
+  <script>
+    (function(){
+      var terms = document.querySelectorAll('.term');
+      if(!terms.length) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = 'note-backdrop';
+      document.body.appendChild(backdrop);
+
+      function closeAll(){
+        terms.forEach(function(t){ t.classList.remove('active'); });
+        backdrop.classList.remove('visible');
+      }
+
+      terms.forEach(function(term){
+        term.addEventListener('click', function(e){
+          var wasActive = term.classList.contains('active');
+          closeAll();
+          if(!wasActive){
+            term.classList.add('active');
+            backdrop.classList.add('visible');
+          }
+          e.stopPropagation();
+        });
+      });
+
+      backdrop.addEventListener('click', closeAll);
+      document.addEventListener('click', closeAll);
+    })();
+  </script>
+<!-- статистика посещений (GoatCounter) -->
+<script data-goatcounter="https://hirotamashi.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
